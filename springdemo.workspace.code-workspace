@@ -16,7 +16,8 @@
       ".settings": true,
       ".project": true,
       ".gitignore": true,
-	  ".mvn": true
+      ".classpath": true,
+      ".mvn": true
     }
   },
   "extensions": {

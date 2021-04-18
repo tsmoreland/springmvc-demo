@@ -14,33 +14,15 @@ package com.moreland.web.springdemo.controllers;
 
 import java.util.Map;
 
-import com.moreland.web.springdemo.models.Pet;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class PetController {
+public class HomeController {
 
-    @GetMapping("pet")
-    public String getPet(Map<String, Object> model) {
-
-        model.put("title", "Pet Details");
-        model.put("name", "Storm");
-        model.put("species", "Cat");
-        model.put("gender", "Female");
-        return "pet";
+    @GetMapping("/")
+    public String home(Map<String, Object> model) {
+        return "home";
     }
 
-    @GetMapping("addpet")
-    public String getAddPet(@ModelAttribute("pet") Pet model) {
-        return "addpet";
-    }
-
-    @PostMapping("addpet")
-    public String postAddPet(@ModelAttribute("pet") Pet model) {
-        return "addpet";
-    }
 }

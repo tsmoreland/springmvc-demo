@@ -10,37 +10,36 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package com.moreland.web.springdemo.controllers;
+package com.moreland.web.springdemo.models;
 
-import java.util.Map;
+public class Pet {
 
-import com.moreland.web.springdemo.models.Pet;
+    private String name;
+    private String species;
+    private String gender;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-
-@Controller
-public class PetController {
-
-    @GetMapping("pet")
-    public String getPet(Map<String, Object> model) {
-
-        model.put("title", "Pet Details");
-        model.put("name", "Storm");
-        model.put("species", "Cat");
-        model.put("gender", "Female");
-        return "pet";
+    public String getSpecies() {
+        return this.species;
     }
 
-    @GetMapping("addpet")
-    public String getAddPet(@ModelAttribute("pet") Pet model) {
-        return "addpet";
+    public void setSpecies(String species) {
+        this.species = species;
     }
 
-    @PostMapping("addpet")
-    public String postAddPet(@ModelAttribute("pet") Pet model) {
-        return "addpet";
+    public String getGender() {
+        return this.gender;
     }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

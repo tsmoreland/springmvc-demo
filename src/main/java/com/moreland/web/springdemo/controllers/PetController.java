@@ -10,23 +10,24 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+package com.moreland.web.springdemo.controllers;
 
-package com.moreland.web.springdemo;
+import java.util.Map;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-@SpringBootApplication
-public class SpringdemoApplication extends SpringBootServletInitializer {
+@Controller
+public class PetController {
+    
+    @GetMapping("pet")
+    public String getPet(Map<String, Object> model) {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringdemoApplication.class, args);
-	}
+        model.put("title", "Pet Details");
+        model.put("name", "Storm");
+        model.put("species", "Cat");
+        model.put("gender", "Female");
+        return "pet";
+    }
 
-	@Override
-	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(SpringdemoApplication.class);
-	}
 }

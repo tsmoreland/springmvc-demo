@@ -1,0 +1,8 @@
+name=Name
+pet=Pet
+species=Species
+gender=Gender
+
+add = "Add"
+save.changes = "Save Changes'
+submit="Submit"

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ tablib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +13,7 @@
    <form:form modelAttribute="pet">
        <table>
            <tr>
-               <td>Name:</td>
+               <td><spring:message code="name"/>:</td>
                <td>
                    <form:input path="name"/>
                </td>

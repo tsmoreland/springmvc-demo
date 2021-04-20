@@ -41,6 +41,6 @@ public class PetController {
 
     @PostMapping("addpet")
     public String postAddPet(@ModelAttribute("pet") Pet model) {
-        return "addpet";
+        return "redirect:pet";
     }
 }

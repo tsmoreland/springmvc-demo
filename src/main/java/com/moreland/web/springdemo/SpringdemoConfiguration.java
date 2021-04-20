@@ -14,6 +14,8 @@ package com.moreland.web.springdemo;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
@@ -24,11 +26,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
 public class SpringdemoConfiguration implements WebMvcConfigurer {
     
-    /**
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    /** 
      * configure viewResolver mirroing the defaults
      * @return viewResolver with settings matching those in application.properties
      */
@@ -37,7 +45,7 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
         var bean = new InternalResourceViewResolver();
         bean.setPrefix("/WEB-INF/jsp/");
         bean.setSuffix(".jsp");
-        bean.setOrder(0);
+        bean.setOrder(1);
         return bean;
     }
 
@@ -68,5 +76,30 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
         registry
             .addResourceHandler("/scripts/**")
             .addResourceLocations("/WEB-INF/pdf");
+    }
+
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        var templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(applicationContext);
+        templateResolver.setPrefix("/WEB-INF/views");
+        templateResolver.setSuffix(".html");
+        return templateResolver;
+    }
+
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        var templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setEnableSpringELCompiler(true);
+        return templateEngine;
+    }
+
+    @Bean
+    public ViewResolver thymeleafResolver() {
+        var viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setOrder(0);
+        return viewResolver;
     }
 }

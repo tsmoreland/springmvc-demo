@@ -12,10 +12,17 @@
 //
 package com.moreland.web.springdemo.models;
 
+import javax.validation.constraints.NotEmpty;
+
 public class Pet {
 
+    @NotEmpty
     private String name;
+
+    @NotEmpty
     private String species;
+
+    @NotEmpty
     private String gender;
 
     public String getSpecies() {

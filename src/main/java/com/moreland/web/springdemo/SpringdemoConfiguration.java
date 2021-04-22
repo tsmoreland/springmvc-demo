@@ -82,7 +82,7 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
     public SpringResourceTemplateResolver templateResolver() {
         var templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(applicationContext);
-        templateResolver.setPrefix("/WEB-INF/views");
+        templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
         return templateResolver;
     }

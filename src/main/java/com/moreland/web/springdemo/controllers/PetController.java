@@ -14,9 +14,12 @@ package com.moreland.web.springdemo.controllers;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import com.moreland.web.springdemo.models.Pet;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +43,11 @@ public class PetController {
     }
 
     @PostMapping("addpet")
-    public String postAddPet(@ModelAttribute("pet") Pet model) {
+    public String postAddPet(@Valid @ModelAttribute("pet") Pet model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "addpet";
+        }
+
         return "redirect:pet";
     }
 }

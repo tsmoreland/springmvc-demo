@@ -3,6 +3,8 @@ pet=Pet
 species=Species
 gender=Gender
 
-add = "Add"
-save.changes = "Save Changes'
-submit="Submit"
+add=Add
+save.changes=Save Changes
+submit=Submit
+
+NotEmpty.pet.name=name is required

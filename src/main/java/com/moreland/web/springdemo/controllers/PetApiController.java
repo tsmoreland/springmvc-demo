@@ -14,22 +14,52 @@ package com.moreland.web.springdemo.controllers;
 
 import com.moreland.web.springdemo.models.Pet;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class PetApiController {
     
-    @GetMapping("/api/pet")
-    public Pet getPet(@RequestParam(value="name") String name) {
+    @GetMapping("/api/pet/{name}")
+    public EntityModel<Pet> getPet(@PathVariable(value="name") String name) {
 
-        return new Pet(name, "Bunny", "Girl");
+        return EntityModel.of(new Pet(name, "Bunny", "Girl"),
+            linkTo(methodOn(PetApiController.class).getPet("Bunny")).withSelfRel(),
+            linkTo(methodOn(PetApiController.class).getPets()).withRel("pet"));
+    }
+
+    @GetMapping("/api/pet")
+    public CollectionModel<EntityModel<Pet>> getPets() {
+        List<EntityModel<Pet>> pets = new ArrayList<>();
+
+        return CollectionModel.of(pets, 
+            linkTo(methodOn(PetApiController.class).getPets()).withSelfRel());
     }
 
     @PostMapping("/api/pet")
     public Pet addPet(Pet pet) {
         return pet;
+    }
+
+    @PutMapping("/api/pet")
+    public Pet updatePet(Pet pet) {
+        return pet;
+    }
+
+    @DeleteMapping("/api/pet/{name}")
+    public ResponseEntity<String> deletePet(@PathVariable("name") String name) {
+        return ResponseEntity.ok("");
     }
 }

@@ -12,7 +12,9 @@
 //
 package com.moreland.web.springdemo.controllers;
 
+import com.moreland.web.springdemo.models.Gender;
 import com.moreland.web.springdemo.models.Pet;
+import com.moreland.web.springdemo.models.Species;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -35,7 +37,7 @@ public class PetApiController {
     @GetMapping("/api/pet/{name}")
     public EntityModel<Pet> getPet(@PathVariable(value="name") String name) {
 
-        return EntityModel.of(new Pet(name, "Bunny", "Girl"),
+        return EntityModel.of(new Pet(name, Species.RABBIT, Gender.Female),
             linkTo(methodOn(PetApiController.class).getPet("Bunny")).withSelfRel(),
             linkTo(methodOn(PetApiController.class).getPets()).withRel("pet"));
     }

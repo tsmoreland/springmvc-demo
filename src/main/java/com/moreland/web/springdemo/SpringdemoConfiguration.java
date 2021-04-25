@@ -13,6 +13,7 @@
 package com.moreland.web.springdemo;
 
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
@@ -22,6 +23,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -112,10 +115,49 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         final var envSnapshot = Environment.getProperties();
 
+        System.out.println(envSnapshot.getProperty("driverClassName"));
+        /*
         dataSource.setDriverClassName(envSnapshot.getProperty("driverClassName"));
         dataSource.setUrl(envSnapshot.getProperty("url"));
         dataSource.setUsername(envSnapshot.getProperty("user"));
         dataSource.setPassword(envSnapshot.getProperty("password"));
+        */
+
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setUrl("jdbc:sqlite:memory:myDb?cache=shared");
+        dataSource.setUsername("sa");
+        dataSource.setPassword("sa");
         return dataSource;
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+
+        em.setDataSource(dataSource());
+        em.setPackagesToScan(new String[] { "com.baeldung.books.models" });
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        em.setJpaProperties(additionalProperties());
+        return em;
+    }
+
+    final Properties additionalProperties() {
+        final Properties hibernateProperties = new Properties();
+        final var env = Environment.getProperties();
+        if (env.getProperty("hibernate.hbm2ddl.auto") != null) {
+            hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        } else {
+            System.out.println("'hibernate.hbm2ddl.auto' not found");
+
+        }
+
+
+        if (env.getProperty("hibernate.dialect") != null) {
+            hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        }
+        if (env.getProperty("hibernate.show_sql") != null) {
+            hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        }
+        return hibernateProperties;
     }
 }

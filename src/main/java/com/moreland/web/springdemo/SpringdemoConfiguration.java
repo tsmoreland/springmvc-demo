@@ -14,10 +14,14 @@ package com.moreland.web.springdemo;
 
 import java.util.Locale;
 
+import javax.sql.DataSource;
+
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -101,5 +105,17 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
         viewResolver.setTemplateEngine(templateEngine());
         viewResolver.setOrder(0);
         return viewResolver;
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        final var envSnapshot = Environment.getProperties();
+
+        dataSource.setDriverClassName(envSnapshot.getProperty("driverClassName"));
+        dataSource.setUrl(envSnapshot.getProperty("url"));
+        dataSource.setUsername(envSnapshot.getProperty("user"));
+        dataSource.setPassword(envSnapshot.getProperty("password"));
+        return dataSource;
     }
 }

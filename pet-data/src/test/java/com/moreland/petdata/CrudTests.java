@@ -21,15 +21,24 @@ import com.moreland.petdata.entities.Pet;
 import com.moreland.petdata.entities.Species;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-class PetDataApplicationTests {
+class CrudTests {
 
 	@Autowired
 	private EntityManager entityManager;
+
+	@Autowired
+	private PetRepository petRepository;
+
+	@BeforeEach
+	void setup() {
+		petRepository.deleteAll();
+	}
 
 	@Test
 	void entityManagerPersitDoesNotThrowWhenNewPetIsValid() {
@@ -56,5 +65,46 @@ class PetDataApplicationTests {
 			.hasSize(1)
 			.first()
 			.isEqualTo(pet);
+	}
+
+	@Test
+	void petRepositorySaveDoesNotThrowWhenPetIsValid() {
+		assertDoesNotThrow(() -> {
+			final var pet = new Pet();
+			pet.setName("Storm");
+			pet.setSpecies(Species.CAT);
+			pet.setGender(Gender.Female);
+			petRepository.save(pet);
+		});
+	}
+
+	@Test
+	void petRepositoryFindAllReturnsSavedItem() {
+		assertDoesNotThrow(() -> {
+			final var pet = new Pet();
+			pet.setName("Storm");
+			pet.setSpecies(Species.CAT);
+			pet.setGender(Gender.Female);
+			petRepository.save(pet);
+
+			Assertions.assertThat(petRepository.findAll())
+				.hasSize(1)
+				.first()
+				.isEqualTo(pet);
+		});
+	}
+
+	@Test
+	void petRepositoryDeleteShouldRemoveItem() {
+		assertDoesNotThrow(() -> {
+			final var pet = new Pet();
+			pet.setName("Storm");
+			pet.setSpecies(Species.CAT);
+			pet.setGender(Gender.Female);
+			final var savedPet = petRepository.save(pet);
+
+			petRepository.deleteById(savedPet.getId());
+			Assertions.assertThat(petRepository.count()).isZero();
+		});
 	}
 }

@@ -1,3 +1,4 @@
+/*
 //
 // Copyright © 2021 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
@@ -14,7 +15,6 @@ package com.moreland.petdata;
 
 import com.moreland.petdata.entities.Gender;
 import com.moreland.petdata.entities.Pet;
-import com.moreland.petdata.entities.Species;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Sort;
 
 @DataJpaTest
-public class PagingAndSortingTests {
+public class PagingAndSortingPetTests {
     
     @Autowired
     private PetRepository petRepository;
@@ -36,10 +36,10 @@ public class PagingAndSortingTests {
 
     @Test
     void findByNameReturnsSortedByNamesWhenSortingParameterGiven() {
-        petRepository.save(createPet(1, "Storm", Species.CAT, Gender.Female));
-        petRepository.save(createPet(2, "Mystique", Species.CAT, Gender.Female));
-        petRepository.save(createPet(3, "Launch", Species.RABBIT, Gender.Female));
-        petRepository.save(createPet(4, "ChiChi", Species.RABBIT, Gender.Female));
+        petRepository.save(createPet(1, "Storm", Gender.Female));
+        petRepository.save(createPet(2, "Mystique", Gender.Female));
+        petRepository.save(createPet(3, "Launch", Gender.Female));
+        petRepository.save(createPet(4, "ChiChi", Gender.Female));
 
         final var pets = petRepository.findAll(Sort.by("name", "species"));
         Assertions.assertThat(pets).hasSize(4);
@@ -51,13 +51,13 @@ public class PagingAndSortingTests {
         Assertions.assertThat(iterator.next().getName()).isEqualTo("Storm");
     }
 
-    private static Pet createPet(long id, String name, Species species, Gender gender) {
+    private static Pet createPet(long id, String name, Gender gender) {
         var pet = new Pet();
         pet.setId(Long.valueOf(id));
         pet.setName(name);
-        pet.setSpecies(species);
         pet.setGender(gender);
 
         return pet;
     }
 }
+*/

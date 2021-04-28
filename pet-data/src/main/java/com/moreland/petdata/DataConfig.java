@@ -10,48 +10,21 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package com.moreland.petdata.entities;
+package com.moreland.petdata;
 
-/*
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-*/
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-//@Entity
-public class Pet {
+@Configuration
+public class DataConfig {
     
-    //@Id
-    //@GeneratedValue
-    private Long id;
-
-    private String name;
-
-    //@Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
+    @Bean(name = { "petRepository" })
+    public PetRepository petRepository(PetRepository petRepository) {
+        return petRepository;
     }
 
-    public String getName() {
-        return name;
+    @Bean(name = { "animalRepository" })
+    public AnimalRepository animalRepository(AnimalRepository animalRepository) {
+        return animalRepository;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
 }

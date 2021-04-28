@@ -10,48 +10,26 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package com.moreland.petdata.entities;
+package com.moreland.petdata;
 
-/*
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-*/
+import java.util.List;
 
-//@Entity
-public class Pet {
+import com.moreland.petdata.entities.Animal;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AnimalRepository extends PagingAndSortingRepository<Animal, String> {
     
-    //@Id
-    //@GeneratedValue
-    private Long id;
+    List<Animal> findByName(String name);
+    Page<Animal> findByName(String name, Pageable pageable);
+	Iterable<Animal> findByName(String name, Sort sort);
 
-    private String name;
-
-    //@Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
+    List<Animal> findByNameIgnoreCase(String name);
+    Page<Animal> findByNameIgnoreCase(String name, Pageable pageable);
+	Iterable<Animal> findByNameIgnoreCase(String name, Sort sort);
 }

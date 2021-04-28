@@ -23,7 +23,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AnimalRepository extends PagingAndSortingRepository<Animal, String> {
+public interface AnimalRepository extends PagingAndSortingRepository<Animal, Long> {
     
     List<Animal> findByName(String name);
     Page<Animal> findByName(String name, Pageable pageable);

@@ -18,11 +18,11 @@ import com.moreland.petdata.entities.AnimalType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Sort;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataMongoTest
+@DataJpaTest
 public class PagingAndSortingAnimalTests {
     
     @Autowired
@@ -35,18 +35,18 @@ public class PagingAndSortingAnimalTests {
 
     @Test
     void findByNameReturnsSortedByNamesWhenSortingParameterGiven() {
-        animalRepository.save(createAnimal("cat",  "cat", AnimalType.MAMMAL));
-        animalRepository.save(createAnimal("goldfish",  "goldfish", AnimalType.FISH));
-        animalRepository.save(createAnimal("rabbit",  "rabbit", AnimalType.MAMMAL));
+        animalRepository.save(createAnimal(1,  "cat", AnimalType.MAMMAL));
+        animalRepository.save(createAnimal(2,  "goldfish", AnimalType.FISH));
+        animalRepository.save(createAnimal(3,  "rabbit", AnimalType.MAMMAL));
 
         final var animals = animalRepository.findAll(Sort.by("name"));
         
         assertThat(animals).hasSize(3);
     }
 
-    private static Animal createAnimal(String id, String name, AnimalType type) {
+    private static Animal createAnimal(long id, String name, AnimalType type) {
         var animal = new Animal();
-        animal.setId(id);
+        animal.setId(Long.valueOf(id));
         animal.setName(name);
         animal.setType(type);
 

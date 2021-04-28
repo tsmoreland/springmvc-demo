@@ -1,4 +1,3 @@
-/*
 //
 // Copyright © 2021 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
@@ -41,7 +40,7 @@ public class PagingAndSortingPetTests {
         petRepository.save(createPet(3, "Launch", Gender.Female));
         petRepository.save(createPet(4, "ChiChi", Gender.Female));
 
-        final var pets = petRepository.findAll(Sort.by("name", "species"));
+        final var pets = petRepository.findAll(Sort.by("name", "gender"));
         Assertions.assertThat(pets).hasSize(4);
 
         final var iterator = pets.iterator();
@@ -60,4 +59,3 @@ public class PagingAndSortingPetTests {
         return pet;
     }
 }
-*/

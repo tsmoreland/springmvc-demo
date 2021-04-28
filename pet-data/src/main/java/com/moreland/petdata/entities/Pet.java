@@ -12,28 +12,41 @@
 //
 package com.moreland.petdata.entities;
 
-/*
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-*/
 
-//@Entity
+@Entity
 public class Pet {
     
-    //@Id
-    //@GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
 
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    private Long animalTypeId;
+    private String animalType;
 
     public Long getId() {
         return id;
+    }
+    public String getAnimalType() {
+        return animalType;
+    }
+    public void setAnimalType(String animalType) {
+        this.animalType = animalType;
+    }
+    public Long getAnimalTypeId() {
+        return animalTypeId;
+    }
+    public void setAnimalTypeId(Long animalTypeId) {
+        this.animalTypeId = animalTypeId;
     }
     public void setId(Long id) {
         this.id = id;

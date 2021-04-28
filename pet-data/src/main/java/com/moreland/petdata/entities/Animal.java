@@ -12,17 +12,28 @@
 //
 package com.moreland.petdata.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Animal {
     
-    String id;
+    @Id
+    @GeneratedValue
+    Long id;
     String name;
+
+    @Enumerated(EnumType.STRING)
     AnimalType type;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

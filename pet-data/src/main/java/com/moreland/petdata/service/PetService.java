@@ -10,13 +10,35 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package com.moreland.petdata.entities;
+package com.moreland.petdata.service;
 
-public enum AnimalType {
+
+import com.moreland.petdata.entities.Pet;
+import com.moreland.petdata.repository.PetRepository;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+@Component
+public class PetService {
+
+    private final PetRepository petRepository;
     
-    UNKONWN,
-    MAMMAL,
-    BIRD,
-    REPTILE,
-    FISH
+    public PetService(PetRepository petRepository) {
+        this.petRepository = petRepository;
+    }
+
+    public void AddPets(Pet... pets) {
+        for (var pet : pets) {
+            petRepository.save(pet);
+        }
+        if (pets.length > 5) {
+            throw new RuntimeException("Too many pets");
+        }
+    }
+
+    @Transactional
+    public void AddPetsTransaction(Pet... pets) {
+        AddPets(pets);
+    }
 }

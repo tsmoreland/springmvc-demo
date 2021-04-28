@@ -28,25 +28,13 @@ public class Pet {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Species species;
 
-    private Long animalTypeId;
-    private String animalType;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     public Long getId() {
         return id;
-    }
-    public String getAnimalType() {
-        return animalType;
-    }
-    public void setAnimalType(String animalType) {
-        this.animalType = animalType;
-    }
-    public Long getAnimalTypeId() {
-        return animalTypeId;
-    }
-    public void setAnimalTypeId(Long animalTypeId) {
-        this.animalTypeId = animalTypeId;
     }
     public void setId(Long id) {
         this.id = id;
@@ -59,6 +47,13 @@ public class Pet {
         this.name = name;
     }
 
+    public Species getSpecies() {
+        return species;
+    }
+    public void setSpecies(Species species) {
+        this.species = species;
+    }
+
     public Gender getGender() {
         return gender;
     }
@@ -67,4 +62,22 @@ public class Pet {
         this.gender = gender;
     }
 
+
+    public static Pet createPet(String name, Species species, Gender gender) {
+        var pet = new Pet();
+        pet.setName(name);
+        pet.setSpecies(species);
+        pet.setGender(gender);
+
+        return pet;
+    }
+    public static Pet createPet(long id, String name, Species species, Gender gender) {
+        var pet = new Pet();
+        pet.setId(Long.valueOf(id));
+        pet.setName(name);
+        pet.setSpecies(species);
+        pet.setGender(gender);
+
+        return pet;
+    }
 }

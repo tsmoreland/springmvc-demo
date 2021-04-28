@@ -13,7 +13,9 @@
 package com.moreland.petdata;
 
 import com.moreland.petdata.entities.Gender;
-import com.moreland.petdata.entities.Pet;
+import com.moreland.petdata.entities.Species;
+import com.moreland.petdata.repository.PetRepository;
+import static com.moreland.petdata.entities.Pet.createPet;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,10 +37,10 @@ public class PagingAndSortingPetTests {
 
     @Test
     void findByNameReturnsSortedByNamesWhenSortingParameterGiven() {
-        petRepository.save(createPet(1, "Storm", Gender.Female));
-        petRepository.save(createPet(2, "Mystique", Gender.Female));
-        petRepository.save(createPet(3, "Launch", Gender.Female));
-        petRepository.save(createPet(4, "ChiChi", Gender.Female));
+        petRepository.save(createPet(1, "Storm",  Species.CAT, Gender.FEMALE));
+        petRepository.save(createPet(2, "Mystique", Species.CAT, Gender.FEMALE));
+        petRepository.save(createPet(3, "Launch", Species.RABBIT, Gender.FEMALE));
+        petRepository.save(createPet(4, "ChiChi", Species.RABBIT, Gender.FEMALE));
 
         final var pets = petRepository.findAll(Sort.by("name", "gender"));
         Assertions.assertThat(pets).hasSize(4);
@@ -50,12 +52,4 @@ public class PagingAndSortingPetTests {
         Assertions.assertThat(iterator.next().getName()).isEqualTo("Storm");
     }
 
-    private static Pet createPet(long id, String name, Gender gender) {
-        var pet = new Pet();
-        pet.setId(Long.valueOf(id));
-        pet.setName(name);
-        pet.setGender(gender);
-
-        return pet;
-    }
 }

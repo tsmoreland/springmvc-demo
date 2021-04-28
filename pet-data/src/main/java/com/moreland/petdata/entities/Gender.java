@@ -13,7 +13,7 @@
 package com.moreland.petdata.entities;
 
 public enum Gender {
-    Unspecified,
-    Male,
-    Female
+    UNSPECIFIED,
+    MALE,
+    FEMALE
 }

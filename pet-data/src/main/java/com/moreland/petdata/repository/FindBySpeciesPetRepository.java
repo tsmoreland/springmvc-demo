@@ -10,26 +10,28 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package com.moreland.petdata;
+package com.moreland.petdata.repository;
 
 import java.util.List;
 
-import com.moreland.petdata.entities.Animal;
+import javax.persistence.EntityManager;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import com.moreland.petdata.entities.Pet;
+import com.moreland.petdata.entities.Species;
 
-@Repository
-public interface AnimalRepository extends PagingAndSortingRepository<Animal, Long> {
+public class FindBySpeciesPetRepository implements FindBySpeciesRepository {
+
+    private final EntityManager entityManager;
+
+    public FindBySpeciesPetRepository(EntityManager entityManager) {
+        super();
+        this.entityManager = entityManager;
+    }
+
+    @Override
+    public List<Pet> findBySpecies(Species species) {
+        var query = entityManager.createQuery("SELECT * from Pet p WHERE Species = :species", Pet.class);
+        return query.setParameter("species", species).getResultList();
+    }
     
-    List<Animal> findByName(String name);
-    Page<Animal> findByName(String name, Pageable pageable);
-	Iterable<Animal> findByName(String name, Sort sort);
-
-    List<Animal> findByNameIgnoreCase(String name);
-    Page<Animal> findByNameIgnoreCase(String name, Pageable pageable);
-	Iterable<Animal> findByNameIgnoreCase(String name, Sort sort);
 }

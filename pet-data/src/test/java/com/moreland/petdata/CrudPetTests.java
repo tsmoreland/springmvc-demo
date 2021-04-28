@@ -1,4 +1,3 @@
-/*
 //
 // Copyright © 2021 Terry Moreland
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
@@ -19,6 +18,8 @@ import javax.persistence.EntityManager;
 
 import com.moreland.petdata.entities.Gender;
 import com.moreland.petdata.entities.Pet;
+import com.moreland.petdata.entities.Species;
+import com.moreland.petdata.repository.PetRepository;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,18 +44,14 @@ class CrudPetTests {
 	@Test
 	void entityManagerPersitDoesNotThrowWhenNewPetIsValid() {
 		assertDoesNotThrow(() -> {
-			final var pet = new Pet();
-			pet.setName("Storm");
-			pet.setGender(Gender.Female);
+			final var pet = Pet.createPet("Storm", Species.CAT, Gender.FEMALE);
 			entityManager.persist(pet);
 		});
 	}
 
 	@Test
 	void entityManagerGetResultListReturnsPersistedPet() {
-		final var pet = new Pet();
-		pet.setName("Storm");
-		pet.setGender(Gender.Female);
+		final var pet = Pet.createPet("Storm", Species.CAT, Gender.FEMALE);
 		entityManager.persist(pet);
 
 		final var query = entityManager.createQuery("select p from Pet p", Pet.class);
@@ -68,9 +65,7 @@ class CrudPetTests {
 	@Test
 	void petRepositorySaveDoesNotThrowWhenPetIsValid() {
 		assertDoesNotThrow(() -> {
-			final var pet = new Pet();
-			pet.setName("Storm");
-			pet.setGender(Gender.Female);
+			final var pet = Pet.createPet("Storm", Species.CAT, Gender.FEMALE);
 			petRepository.save(pet);
 		});
 	}
@@ -78,9 +73,7 @@ class CrudPetTests {
 	@Test
 	void petRepositoryFindAllReturnsSavedItem() {
 		assertDoesNotThrow(() -> {
-			final var pet = new Pet();
-			pet.setName("Storm");
-			pet.setGender(Gender.Female);
+			final var pet = Pet.createPet("Storm", Species.CAT, Gender.FEMALE);
 			petRepository.save(pet);
 
 			Assertions.assertThat(petRepository.findAll())
@@ -93,9 +86,7 @@ class CrudPetTests {
 	@Test
 	void petRepositoryDeleteShouldRemoveItem() {
 		assertDoesNotThrow(() -> {
-			final var pet = new Pet();
-			pet.setName("Storm");
-			pet.setGender(Gender.Female);
+			final var pet = Pet.createPet("Storm", Species.CAT, Gender.FEMALE);
 			final var savedPet = petRepository.save(pet);
 
 			petRepository.deleteById(savedPet.getId());
@@ -103,4 +94,3 @@ class CrudPetTests {
 		});
 	}
 }
-*/

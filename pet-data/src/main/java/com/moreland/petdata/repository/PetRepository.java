@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-package com.moreland.petdata;
+package com.moreland.petdata.repository;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 
-public interface PetRepository extends PagingAndSortingRepository<Pet, Long> {
+public interface PetRepository extends PagingAndSortingRepository<Pet, Long>, FindBySpeciesRepository {
     
     List<Pet> findByName(String name);
     Page<Pet> findByName(String name, Pageable pageable);

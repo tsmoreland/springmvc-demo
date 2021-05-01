@@ -1,12 +1,16 @@
 version: '3.4'
 
 services:
-  mysql-datbase:
+  mysql-database:
     image: mysql:8.0.24        
+    command: --default-authentication-plugin=mysql_native_password
     ports:
       - "3306:3306"
     environment:
+      MYSQL_DATABASE: moreland-sample-jdbc
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: test
+      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWROD}
     networks:
       - backend-network
     volumes: 

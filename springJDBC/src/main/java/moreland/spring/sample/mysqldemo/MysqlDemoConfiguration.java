@@ -12,9 +12,32 @@
 //
 package moreland.spring.sample.mysqldemo;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 public class MysqlDemoConfiguration {
-  
+
+    @Resource
+    private Environment environment;
+
+    @Bean
+    public static DatabaseConfiguration databaseConfiguration() {
+        return new DatabaseConfiguration();
+    }   
+
+    @Bean
+    public DriverManagerDataSource dataSource() {
+        var dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getRequiredProperty("mysqldemo.driverClassName"));
+        dataSource.setUsername(environment.getRequiredProperty("mysqldemo.username"));
+        dataSource.setPassword(System.getenv(environment.getRequiredProperty("mysqldemo.password")));
+        dataSource.setUrl(environment.getRequiredProperty("mysqldemo.url"));
+        return dataSource;
+    }
+
 }

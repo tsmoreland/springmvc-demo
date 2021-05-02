@@ -10,15 +10,23 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package moreland.spring.sample.mysqldemo.repositories;
+package moreland.spring.sample.mysqldemo.repositories.rowmappers;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
 
-public interface PetRepository {
-    Pet createPet(Pet pet);
-    Pet findPetById(Long id);
-    List<Pet> getPets();
+public class PetRowMapper implements RowMapper<Pet>{
 
+    @Override
+    public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
+        var pet = new Pet();
+        pet.setId(rs.getLong("id"));
+        pet.setName(rs.getString("name"));
+        return pet;
+    }
+    
 }

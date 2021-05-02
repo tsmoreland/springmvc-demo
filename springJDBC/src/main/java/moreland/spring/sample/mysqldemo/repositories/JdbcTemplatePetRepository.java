@@ -12,12 +12,17 @@
 //
 package moreland.spring.sample.mysqldemo.repositories;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
+import moreland.spring.sample.mysqldemo.repositories.rowmappers.PetRowMapper;
 
 public class JdbcTemplatePetRepository implements PetRepository {
 
@@ -26,14 +31,36 @@ public class JdbcTemplatePetRepository implements PetRepository {
 
     @Override
     public Pet createPet(Pet pet) {
-        jdbcTemplate.update("insert into pet (name) values (?, ?)", pet.getName());
+        //jdbcTemplate.update("insert into pet (name) values (?, ?)", pet.getName());
 
-        return pet;
+        var keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update((connection) -> {
+            var preparedStatement = connection.prepareStatement("insert into pet (name) values (?)", new String[] { "id" });
+            preparedStatement.setString(1, pet.getName());
+            return preparedStatement;
+        }, keyHolder); 
+        final Number id = keyHolder.getKey();
+        return findPetById(id.longValue());
+    }
+
+    @Override
+    public Pet findPetById(Long id) {
+        return jdbcTemplate.queryForObject("select * from pet where id = ?", new PetRowMapper(), id);
     }
 
     @Override
     public List<Pet> getPets() {
-        return List.of();
+        var pets = jdbcTemplate.query("select  * from pet", new RowMapper<Pet>() {
+            @Override
+            public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
+                var pet = new Pet();
+                pet.setId(rs.getLong("id"));
+                pet.setName(rs.getString("name"));
+                return pet;
+            }
+        });
+
+        return pets;
     }
 
 

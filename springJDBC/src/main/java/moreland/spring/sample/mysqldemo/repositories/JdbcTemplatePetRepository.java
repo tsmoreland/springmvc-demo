@@ -63,6 +63,14 @@ public class JdbcTemplatePetRepository implements PetRepository {
         return pets;
     }
 
+    @Override
+    public Pet updatePet(Pet pet) {
+        jdbcTemplate.update("update pet set name = ? where id = ?", pet.getName(), pet.getId());
+        return pet;
+    }
 
-    
+    @Override
+    public void batchUpdateName(List<Object[]> pairs) {
+        jdbcTemplate.batchUpdate("update pet set name = ? where id = ?", pairs);
+    }
 }

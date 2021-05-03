@@ -10,17 +10,16 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package moreland.spring.sample.mysqldemo.repositories;
+package moreland.spring.sample.mysqldemo.services;
 
 import java.util.List;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
 
-public interface PetRepository {
+public interface PetService {
     Pet createPet(Pet pet);
     Pet findPetById(Long id);
     List<Pet> getPets();
     Pet updatePet(Pet pet);
-    void batchUpdateName(List<Object[]> pairs);
-
+    void batchUpdateName(List<Pet> updatedPets);
 }

@@ -10,17 +10,49 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package moreland.spring.sample.mysqldemo.repositories;
+package moreland.spring.sample.mysqldemo.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
+import moreland.spring.sample.mysqldemo.repositories.PetRepository;
 
-public interface PetRepository {
-    Pet createPet(Pet pet);
-    Pet findPetById(Long id);
-    List<Pet> getPets();
-    Pet updatePet(Pet pet);
-    void batchUpdateName(List<Object[]> pairs);
+public class PetServiceImpl implements PetService {
 
+    private PetRepository petRepository;
+
+    public PetServiceImpl(PetRepository petRepository) {
+        super();
+        this.petRepository = petRepository;
+    }
+
+    @Override
+    public Pet createPet(Pet pet) {
+        return petRepository.createPet(pet);
+    }
+
+    @Override
+    public Pet findPetById(Long id) {
+        return petRepository.findPetById(id);
+    }
+
+    @Override
+    public List<Pet> getPets() {
+        return petRepository.getPets();
+    }
+
+    @Override
+    public Pet updatePet(Pet pet) {
+        return petRepository.updatePet(pet);
+    }
+
+    @Override
+    public void batchUpdateName(List<Pet> updatedPets) {
+        var pairs = updatedPets.stream()
+            .map(p -> new Object[] { p.getName(), p.getId()})
+            .collect(Collectors.toList());
+       petRepository.batchUpdateName(pairs); 
+    }
+    
 }

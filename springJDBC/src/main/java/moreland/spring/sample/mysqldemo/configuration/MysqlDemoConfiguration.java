@@ -17,9 +17,12 @@ import javax.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
+@EnableTransactionManagement
 public class MysqlDemoConfiguration {
 
     @Resource
@@ -29,6 +32,12 @@ public class MysqlDemoConfiguration {
     public static DatabaseConfiguration databaseConfiguration() {
         return new DatabaseConfiguration();
     }   
+
+    @Bean(name = "dataSource")
+    public DataSourceTransactionManager transactionManager() {
+        return new DataSourceTransactionManager(dataSource());
+
+    }
 
     @Bean
     public DriverManagerDataSource dataSource() {

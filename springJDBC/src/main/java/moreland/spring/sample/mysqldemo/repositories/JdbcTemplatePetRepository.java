@@ -14,11 +14,13 @@ package moreland.spring.sample.mysqldemo.repositories;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
@@ -30,7 +32,7 @@ public class JdbcTemplatePetRepository implements PetRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Pet createPet(Pet pet) {
+    public Pet create(Pet pet) {
         //jdbcTemplate.update("insert into pet (name) values (?, ?)", pet.getName());
 
         var keyHolder = new GeneratedKeyHolder();
@@ -40,16 +42,16 @@ public class JdbcTemplatePetRepository implements PetRepository {
             return preparedStatement;
         }, keyHolder); 
         final Number id = keyHolder.getKey();
-        return findPetById(id.longValue());
+        return findById(id.longValue());
     }
 
     @Override
-    public Pet findPetById(Long id) {
+    public Pet findById(Long id) {
         return jdbcTemplate.queryForObject("select * from pet where id = ?", new PetRowMapper(), id);
     }
 
     @Override
-    public List<Pet> getPets() {
+    public List<Pet> getAll() {
         var pets = jdbcTemplate.query("select  * from pet", new RowMapper<Pet>() {
             @Override
             public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -64,13 +66,28 @@ public class JdbcTemplatePetRepository implements PetRepository {
     }
 
     @Override
-    public Pet updatePet(Pet pet) {
-        jdbcTemplate.update("update pet set name = ? where id = ?", pet.getName(), pet.getId());
+    public Pet update(Pet pet) {
+        var namedTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        var parameterMap = new HashMap<String, Object>();
+        parameterMap.put("id", pet.getId());
+        parameterMap.put("name", pet.getName());
+
+        namedTemplate.update("update pet set name = :name where id = :id", parameterMap);
         return pet;
     }
 
     @Override
     public void batchUpdateName(List<Object[]> pairs) {
         jdbcTemplate.batchUpdate("update pet set name = ? where id = ?", pairs);
+    }
+
+    @Override
+    public void delete(Pet pet) {
+        deleteById(pet.getId());
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        jdbcTemplate.update("delete from pet where id = ?", id);
     }
 }

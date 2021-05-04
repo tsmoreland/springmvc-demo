@@ -15,6 +15,8 @@ package moreland.spring.sample.mysqldemo.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import moreland.spring.sample.mysqldemo.entities.Pet;
 import moreland.spring.sample.mysqldemo.repositories.PetRepository;
 
@@ -29,30 +31,42 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public Pet createPet(Pet pet) {
-        return petRepository.createPet(pet);
+        return petRepository.create(pet);
     }
 
     @Override
-    public Pet findPetById(Long id) {
-        return petRepository.findPetById(id);
+    public Pet findById(Long id) {
+        return petRepository.findById(id);
     }
 
     @Override
-    public List<Pet> getPets() {
-        return petRepository.getPets();
+    public List<Pet> getAll() {
+        return petRepository.getAll();
     }
 
     @Override
-    public Pet updatePet(Pet pet) {
-        return petRepository.updatePet(pet);
+    public Pet update(Pet pet) {
+        return petRepository.update(pet);
     }
 
     @Override
+    @Transactional
     public void batchUpdateName(List<Pet> updatedPets) {
         var pairs = updatedPets.stream()
             .map(p -> new Object[] { p.getName(), p.getId()})
             .collect(Collectors.toList());
        petRepository.batchUpdateName(pairs); 
+    }
+
+    @Override
+    public void delete(Pet pet) {
+        petRepository.delete(pet);
+        
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        petRepository.deleteById(id);
     }
     
 }

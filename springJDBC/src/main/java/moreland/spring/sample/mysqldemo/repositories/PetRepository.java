@@ -17,10 +17,12 @@ import java.util.List;
 import moreland.spring.sample.mysqldemo.entities.Pet;
 
 public interface PetRepository {
-    Pet createPet(Pet pet);
-    Pet findPetById(Long id);
-    List<Pet> getPets();
-    Pet updatePet(Pet pet);
+    Pet create(Pet pet);
+    Pet findById(Long id);
+    List<Pet> getAll();
+    Pet update(Pet pet);
     void batchUpdateName(List<Object[]> pairs);
+    void delete(Pet pet);
+    void deleteById(Long id);
 
 }

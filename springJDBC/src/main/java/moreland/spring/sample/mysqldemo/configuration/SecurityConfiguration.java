@@ -10,34 +10,22 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package moreland.spring.sample.mysqldemo;
+package moreland.spring.sample.mysqldemo.configuration;
 
-import javax.annotation.Resource;
-
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-public class MysqlDemoConfiguration {
-
-    @Resource
-    private Environment environment;
-
-    @Bean
-    public static DatabaseConfiguration databaseConfiguration() {
-        return new DatabaseConfiguration();
-    }   
-
-    @Bean
-    public DriverManagerDataSource dataSource() {
-        var dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getRequiredProperty("mysqldemo.driverClassName"));
-        dataSource.setUsername(environment.getRequiredProperty("mysqldemo.username"));
-        dataSource.setPassword(System.getenv(environment.getRequiredProperty("mysqldemo.password")));
-        dataSource.setUrl(environment.getRequiredProperty("mysqldemo.url"));
-        return dataSource;
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
+        
+        http.authorizeRequests()
+            .antMatchers("/")
+            .permitAll();
     }
-
 }

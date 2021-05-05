@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
+import moreland.spring.sample.mysqldemo.model.PetUpsert;
 import moreland.spring.sample.mysqldemo.model.Problem;
 import moreland.spring.sample.mysqldemo.model.ProblemBuilder;
 import moreland.spring.sample.mysqldemo.services.PetService;
@@ -45,8 +46,8 @@ public class PetController {
     }
 
     @RequestMapping(value = "/api/pet", method = RequestMethod.POST)
-    public @ResponseBody Pet createPet(@RequestBody Pet pet) {
-        return petService.createPet(pet);
+    public @ResponseBody Pet createPet(@RequestBody PetUpsert pet) {
+        return petService.createPet(pet.buildNewPet());
     }
 
     @RequestMapping(value = "/api/pet/{id}", method = RequestMethod.GET)
@@ -59,6 +60,17 @@ public class PetController {
         return petService.getAll();
     }
 
+    @RequestMapping(value = "/api/pet/{id}", method = RequestMethod.PUT)
+    public @ResponseBody Pet update(@PathVariable("id") Long id, @RequestBody PetUpsert pet) {
+        return petService.update(pet.buildExistingPet(id));
+    }
+
+    @RequestMapping(value = "/api/pet/{id}", method = RequestMethod.DELETE)
+    public @ResponseBody Object delete(@PathVariable("id") Long id) {
+        petService.deleteById(id);
+        return null;
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public @ResponseBody Problem handle(HttpServletRequest request, HttpServletResponse response, RuntimeException exception) {
         return (new ProblemBuilder())
@@ -68,4 +80,5 @@ public class PetController {
             .withInstance("about:blank")
             .build();
     }
+
 }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = ErrorMvcAutoConfiguration.class)
-@ComponentScan("moreland.spring.sample.mysqldemo")
+@ComponentScan("moreland.spring.sample.mysqldemo.configuration")
 public class MysqldemoApplication {
 
 	public static void main(String[] args) {

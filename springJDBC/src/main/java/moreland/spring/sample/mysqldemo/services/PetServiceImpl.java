@@ -26,11 +26,16 @@ public class PetServiceImpl implements PetService {
 
     public PetServiceImpl(PetRepository petRepository) {
         super();
+
+        if (petRepository == null) {
+            throw new IllegalArgumentException("petRepository cannot be null");
+        }
+
         this.petRepository = petRepository;
     }
 
     @Override
-    public Pet createPet(Pet pet) {
+    public Pet create(Pet pet) {
         return petRepository.create(pet);
     }
 

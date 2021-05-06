@@ -47,7 +47,7 @@ public class PetController {
 
     @RequestMapping(value = "/api/pet", method = RequestMethod.POST)
     public @ResponseBody Pet createPet(@RequestBody PetUpsert pet) {
-        return petService.createPet(pet.buildNewPet());
+        return petService.create(pet.buildNewPet());
     }
 
     @RequestMapping(value = "/api/pet/{id}", method = RequestMethod.GET)

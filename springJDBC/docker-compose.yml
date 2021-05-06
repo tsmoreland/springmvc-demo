@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: moreland-sample-jdbc
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: test
-      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWROD}
+      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
     networks:
       - backend-network
     volumes: 

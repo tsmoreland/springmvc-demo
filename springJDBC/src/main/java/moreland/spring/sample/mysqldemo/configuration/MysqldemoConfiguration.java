@@ -13,20 +13,25 @@
 package moreland.spring.sample.mysqldemo.configuration;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import moreland.spring.sample.mysqldemo.repositories.JdbcTemplatePetRepository;
+import moreland.spring.sample.mysqldemo.repositories.PetRepository;
+import moreland.spring.sample.mysqldemo.services.PetService;
+import moreland.spring.sample.mysqldemo.services.PetServiceImpl;
 
 @Configuration
-@PropertySource("classpath:database.properties")
-@EnableTransactionManagement
-public class DatabaseConfiguration {
-
+@ComponentScan(basePackages={"moreland.spring.sample.mysqldemo"})
+public class MysqldemoConfiguration {
+    
     @Resource
     private Environment environment;
 
@@ -37,12 +42,28 @@ public class DatabaseConfiguration {
     }
 
     @Bean
-    public DriverManagerDataSource dataSource() {
-        var dataSource = new DriverManagerDataSource();
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("mysqldemo.driverClassName"));
+        dataSource.setUrl(environment.getRequiredProperty("mysqldemo.url"));
         dataSource.setUsername(environment.getRequiredProperty("mysqldemo.username"));
         dataSource.setPassword(System.getenv(environment.getRequiredProperty("mysqldemo.password")));
-        dataSource.setUrl(environment.getRequiredProperty("mysqldemo.url"));
         return dataSource;
     }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public PetRepository petRepository() {
+        return new JdbcTemplatePetRepository();
+    }
+
+    @Bean
+    public PetService petService() {
+        return new PetServiceImpl(petRepository());
+    }
+
 }

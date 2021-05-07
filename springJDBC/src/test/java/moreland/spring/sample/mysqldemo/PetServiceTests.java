@@ -24,7 +24,7 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import moreland.spring.sample.mysqldemo.configuration.DatabaseConfiguration;
+import moreland.spring.sample.mysqldemo.configuration.MysqldemoConfiguration;
 import moreland.spring.sample.mysqldemo.configuration.SecurityConfiguration;
 import moreland.spring.sample.mysqldemo.entities.Pet;
 import moreland.spring.sample.mysqldemo.repositories.PetRepository;
@@ -32,7 +32,7 @@ import moreland.spring.sample.mysqldemo.services.PetService;
 import moreland.spring.sample.mysqldemo.services.PetServiceImpl;
 
 @SpringBootTest
-@ContextConfiguration(classes = {DatabaseConfiguration.class, SecurityConfiguration.class})
+@ContextConfiguration(classes = {SecurityConfiguration.class, MysqldemoConfiguration.class})
 public class PetServiceTests {
     
     @Mock

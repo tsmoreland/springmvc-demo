@@ -22,10 +22,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.stereotype.Repository;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
 import moreland.spring.sample.mysqldemo.repositories.rowmappers.PetRowMapper;
 
+@Repository
 public class JdbcTemplatePetRepository implements PetRepository {
 
     @Autowired

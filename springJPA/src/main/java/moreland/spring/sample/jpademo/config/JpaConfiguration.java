@@ -12,10 +12,8 @@
 //
 package moreland.spring.sample.jpademo.config;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -25,14 +23,6 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 @Configuration
 @ComponentScan(basePackages={"moreland.spring.sample.jpademo"})
 public class JpaConfiguration {
-
-    @Resource
-    private org.springframework.core.env.Environment environment;
-
-    @Bean
-    public DataSource dataSource() {
-        return  DataSourceBuilder.create().build();
-    }
 
     @Bean
     public DataSourceTransactionManager transactionManager(DataSource dataSource) {

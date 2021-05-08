@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  mysql-database:
+    image: postgres:13.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - backend-network
+    volumes: 
+      - postgres-data-volume:/var/lib/postgresql/data
+
+networks:
+  backend-network: {}
+
+volumes:
+  postgres-data-volume:
+    external:
+      name: postgres-data-volume

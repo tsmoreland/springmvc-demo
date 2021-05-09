@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  mysql-database:
+  postgres-database:
     image: postgres:13.2
     ports:
       - "5432:5432"

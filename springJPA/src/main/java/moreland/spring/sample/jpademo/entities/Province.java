@@ -15,6 +15,7 @@ package moreland.spring.sample.jpademo.entities;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -45,6 +46,11 @@ public class Province {
     })
     private Country country;
 
+    @Column(insertable = false, updatable = false)
+    private Long countryId;
+    @Column(insertable = false, updatable = false)
+    private String countryName;
+
     @OneToMany(fetch = FetchType.LAZY,  mappedBy = "province")
     private Set<City> cities;
 
@@ -72,5 +78,27 @@ public class Province {
         this.cities = cities;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+        if (this.country != null) {
+            this.countryId = this.country.getId();
+            this.countryName = this.country.getName();
+        } else {
+            this.countryId = null;
+            this.countryName = null;
+        }
+    }
+
+    public Long getCountryId() {
+        return countryId;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
 
 }

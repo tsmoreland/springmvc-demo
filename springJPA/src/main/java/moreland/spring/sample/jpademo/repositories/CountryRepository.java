@@ -10,12 +10,13 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package moreland.spring.sample.jpademo.repositories;
 
-import moreland.spring.sample.jpademo.entities.City;
+package moreland.spring.sample.jpademo.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CityRepository extends JpaRepository<City, Long> {
+import moreland.spring.sample.jpademo.entities.Country;
+
+public interface CountryRepository extends JpaRepository<Country, Long> {
     
 }

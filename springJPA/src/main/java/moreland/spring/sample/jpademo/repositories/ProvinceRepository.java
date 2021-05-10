@@ -12,10 +12,10 @@
 //
 package moreland.spring.sample.jpademo.repositories;
 
-import moreland.spring.sample.jpademo.entities.City;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CityRepository extends JpaRepository<City, Long> {
+import moreland.spring.sample.jpademo.entities.Province;
+
+public interface ProvinceRepository extends JpaRepository<Province, Long> {
     
 }

@@ -12,6 +12,7 @@
 //
 package moreland.spring.sample.jpademo.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,6 +41,10 @@ public class City {
         @JoinColumn(name="provinceName", referencedColumnName="name")
     })
     private Province province;
+    @Column(insertable = false, updatable = false)
+    private Long provinceId;
+    @Column(insertable = false, updatable = false)
+    private String provinceName;
 
     public Long getId() {
         return id;
@@ -58,5 +63,18 @@ public class City {
     }
     public void setProvince(Province province) {
         this.province = province;
+        if (province != null) {
+            this.provinceId = this.province.getId();
+            this.provinceName = this.province.getName();
+        } else {
+            this.provinceId = null;
+            this.provinceName = null;
+        }
+    }
+    public Long getProvinceId() {
+        return provinceId;
+    }
+    public String getProvinceName() {
+        return provinceName;
     }
 }

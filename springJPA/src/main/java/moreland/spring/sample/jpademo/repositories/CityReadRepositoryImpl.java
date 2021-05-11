@@ -10,12 +10,36 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 package moreland.spring.sample.jpademo.repositories;
+
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import moreland.spring.sample.jpademo.entities.City;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+public class CityReadRepositoryImpl implements CityReadRepository {
 
-public interface CityRepository extends JpaRepository<City, Long>, CityReadRepository {
+    @Autowired
+    private EntityManager entityManager;
+
+    @Override
+    public Optional<City> getOneByName(String name) {
+        try {
+            var query = entityManager.createQuery("select * from cities where name = :name", City.class);
+            return Optional.of(query.setParameter("name", name).getSingleResult());
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Long getTotalCount() {
+        var query = entityManager.createQuery("select count(*) from cities", Long.class);
+        return query.getSingleResult();
+    }
     
 }

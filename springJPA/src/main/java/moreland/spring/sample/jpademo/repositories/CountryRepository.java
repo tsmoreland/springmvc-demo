@@ -13,10 +13,13 @@
 
 package moreland.spring.sample.jpademo.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import moreland.spring.sample.jpademo.entities.Country;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
     
+    List<Country> findbyNameContains(String name);
 }

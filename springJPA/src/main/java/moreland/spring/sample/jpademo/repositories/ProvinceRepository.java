@@ -12,10 +12,13 @@
 //
 package moreland.spring.sample.jpademo.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import moreland.spring.sample.jpademo.entities.Province;
 
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
-    
+    List<Province> findByNameContains(String name);
+    List<Province> findByCountryName(String countryName);
 }

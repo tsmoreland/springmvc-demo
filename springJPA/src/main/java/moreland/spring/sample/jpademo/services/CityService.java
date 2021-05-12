@@ -11,17 +11,15 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-package moreland.spring.sample.jpademo.repositories;
+package moreland.spring.sample.jpademo.services;
 
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import moreland.spring.sample.jpademo.entities.City;
 
-import moreland.spring.sample.jpademo.entities.Country;
-
-public interface CountryRepository extends JpaRepository<Country, Long> {
+public interface CityService {
     
-    Optional<Country> findFirstByName(String name);
-    List<Country> findByNameContains(String name);
+    Optional<City> find(Long id);
+    Optional<City> findByName(String name);
+    void delete(City city);
 }

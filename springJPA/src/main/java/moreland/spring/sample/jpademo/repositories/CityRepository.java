@@ -15,11 +15,15 @@ package moreland.spring.sample.jpademo.repositories;
 import moreland.spring.sample.jpademo.entities.City;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CityRepository extends JpaRepository<City, Long>, CityReadRepository {
     
+    Optional<City> findFirstByName(String name);
     List<City> findByNameContains(String name);
     List<City> findByProvinceName(String provinceName);
+    List<City> findByProvinceNameInOrderByNameAsc(List<String> provinces);
+    List<City> findByProvinceNameInOrderByNameDes(List<String> provinces);
 }

@@ -17,13 +17,14 @@ import moreland.spring.sample.jpademo.entities.City;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CityRepository extends JpaRepository<City, Long>, CityReadRepository {
     
     Optional<City> findFirstByName(String name);
-    List<City> findByNameContains(String name);
-    List<City> findByProvinceName(String provinceName);
-    List<City> findByProvinceNameInOrderByNameAsc(List<String> provinces);
-    List<City> findByProvinceNameInOrderByNameDes(List<String> provinces);
+    Page<City> findByNameContains(String name, Pageable pageable);
+    Page<City> findByProvinceNameInOrderByNameAsc(List<String> provinceNames, Pageable pageable);
+    Page<City> findByProvinceNameInOrderByNameDesc(List<String> provinceNames, Pageable pageable);
 }

@@ -15,6 +15,8 @@ package moreland.spring.sample.jpademo.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,16 +24,22 @@ import org.springframework.data.repository.query.Param;
 import moreland.spring.sample.jpademo.entities.Province;
 
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
-    List<Province> findByNameContains(String name);
-    List<Province> findByCountryName(String countryName);
+    Page<Province> findByNameContains(String name, Pageable pageable);
+    Page<Province> findByCountryName(String countryName, Pageable pageable);
 
-    @Query("select p from provinces p left join fetch p.cities")
-    List<Province> getProvinceWithCities();
+    @Query("""
+        select p from Province p 
+        join p.cities c
+    """) // no join fetch due to paging even though cities is lazy loaded (eagerly here)
+    Page<Province> getWithCities(Pageable pageable);
 
-    @Query(
-        "select p from provinces p" + 
-        "join fetch p.cities " + 
-        "where p.id = :id"
-    )
+    @Query("""
+        select distinct p from Province p
+        join fetch p.cities 
+        where p.id = :id
+    """)
     Optional<Province> getWithCitiesById(@Param("id") Long id);
+
+    Page<Province> findByCountryNameInOrderByNameAsc(List<String> countryNames, Pageable pageable);
+    Page<Province> findByCountryNameInOrderByNameDesc(List<String> countryNames, Pageable pageable);
 }

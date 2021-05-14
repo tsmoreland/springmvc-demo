@@ -16,14 +16,13 @@ package moreland.spring.sample.jpademo.repositories;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.PersistenceContext;
 
 import moreland.spring.sample.jpademo.entities.City;
 
 public class CityReadRepositoryImpl implements CityReadRepository {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override

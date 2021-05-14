@@ -13,12 +13,25 @@
 package moreland.spring.sample.jpademo.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import moreland.spring.sample.jpademo.entities.Province;
 
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
     List<Province> findByNameContains(String name);
     List<Province> findByCountryName(String countryName);
+
+    @Query("select p from provinces p left join fetch p.cities")
+    List<Province> getProvinceWithCities();
+
+    @Query(
+        "select p from provinces p" + 
+        "join fetch p.cities " + 
+        "where p.id = :id"
+    )
+    Optional<Province> getWithCitiesById(@Param("id") Long id);
 }

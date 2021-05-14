@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import moreland.spring.sample.jpademo.entities.Country;
 
@@ -24,4 +26,11 @@ public interface CountryRepository extends JpaRepository<Country, Long> {
     
     Optional<Country> findFirstByName(String name);
     List<Country> findByNameContains(String name);
+
+    @Query(
+        "select c from countries c" + 
+        "left join fetch c.provinces " +
+        "where c.id = :id" 
+    )
+    Optional<Country> getWithProvincesById(@Param("id") Long id);
 }

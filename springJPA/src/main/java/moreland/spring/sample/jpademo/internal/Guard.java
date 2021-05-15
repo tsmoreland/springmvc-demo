@@ -10,28 +10,19 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+package moreland.spring.sample.jpademo.internal;
 
-package moreland.spring.sample.jpademo.repositories;
-
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import moreland.spring.sample.jpademo.entities.City;
-
-public class CityReadRepositoryImpl implements CityReadRepository {
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Override
-    public Optional<City> getOneByName(String name) {
-        try {
-            var query = entityManager.createQuery("select * from cities where name = :name", City.class);
-            return Optional.of(query.setParameter("name", name).getSingleResult());
-        } catch (RuntimeException e) {
-            return Optional.empty();
+public class Guard {
+    
+    public static void guardAgainstArgumentNull(Object argument, String name) {
+        if (argument == null) {
+            throw new IllegalArgumentException("%s cannot be null".formatted(name));
+        }
+    }
+    public static void guardAgainstArgumentNullOrEmpty(String argument, String name) {
+        guardAgainstArgumentNull(argument, name);
+        if (argument.isEmpty()) {
+            throw new IllegalArgumentException("%s cannot be empty".formatted(name));
         }
     }
 }

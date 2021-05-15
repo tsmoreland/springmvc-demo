@@ -19,30 +19,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
-import moreland.spring.sample.jpademo.entities.City;
-import moreland.spring.sample.jpademo.repositories.CityRepository;
+import moreland.spring.sample.jpademo.entities.Country;
+import moreland.spring.sample.jpademo.entities.Province;
+import moreland.spring.sample.jpademo.repositories.CountryRepository;
 
-public class JpaCityService implements CityService {
+public class JpaCountryService implements CountryService {
 
     @Autowired
-    private CityRepository cityRepository;
+    private CountryRepository countryRepository;
+
+    @Autowired
+    private ProvinceService provinceService;
 
     @Override
-    public Optional<City> find(Long id) {
+    public Optional<Country> find(Long id) {
         guardAgainstArgumentNull(id, "id");
         try {
-            return cityRepository.findById(id);
-
+            return countryRepository.findById(id);
         } catch (RuntimeException e) {
             return Optional.empty();
         }
+
     }
 
     @Override
-    public Optional<City> findByName(String name) {
+    public Optional<Country> findByName(String name) {
         guardAgainstArgumentNullOrEmpty(name, "name");
         try {
-            return cityRepository.findFirstByName(name);
+            return countryRepository.findFirstByName(name);
 
         } catch (RuntimeException e) {
             return Optional.empty();
@@ -50,15 +54,12 @@ public class JpaCityService implements CityService {
     }
 
     @Override
-    public void delete(City city) {
-        guardAgainstArgumentNull(city, "city");
-
+    public void delete(Country country) {
+        guardAgainstArgumentNull(country, "country");
         try {
-            cityRepository.delete(city);
-
+            countryRepository.delete(country);
         } catch (RuntimeException e) {
-            // .. log eventually ..
+            // .. log eventually ..yy
         }
     }
-    
 }

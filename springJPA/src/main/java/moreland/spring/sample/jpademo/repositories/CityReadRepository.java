@@ -20,6 +20,4 @@ import moreland.spring.sample.jpademo.entities.City;
 public interface CityReadRepository {
     
     Optional<City> getOneByName(String name);
-    Long getTotalCount();
-
 }

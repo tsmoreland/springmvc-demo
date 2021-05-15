@@ -24,6 +24,7 @@ import org.springframework.data.repository.query.Param;
 import moreland.spring.sample.jpademo.entities.Province;
 
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
+    Optional<Province> findFirstByName(String name);
     Page<Province> findByNameContains(String name, Pageable pageable);
     Page<Province> findByCountryName(String countryName, Pageable pageable);
 

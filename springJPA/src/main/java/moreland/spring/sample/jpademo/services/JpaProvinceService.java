@@ -10,7 +10,6 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 package moreland.spring.sample.jpademo.services;
 
 import java.util.Optional;
@@ -19,30 +18,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
-import moreland.spring.sample.jpademo.entities.City;
-import moreland.spring.sample.jpademo.repositories.CityRepository;
 
-public class JpaCityService implements CityService {
+import moreland.spring.sample.jpademo.entities.Country;
+import moreland.spring.sample.jpademo.entities.Province;
+import moreland.spring.sample.jpademo.repositories.ProvinceRepository;
+
+public class JpaProvinceService implements ProvinceService {
 
     @Autowired
-    private CityRepository cityRepository;
+    private ProvinceRepository provinceRepository;
 
     @Override
-    public Optional<City> find(Long id) {
+    public Optional<Province> find(Long id) {
         guardAgainstArgumentNull(id, "id");
-        try {
-            return cityRepository.findById(id);
 
+        try {
+            return provinceRepository.findById(id);
         } catch (RuntimeException e) {
             return Optional.empty();
         }
+
     }
 
     @Override
-    public Optional<City> findByName(String name) {
+    public Optional<Province> findByName(String name) {
         guardAgainstArgumentNullOrEmpty(name, "name");
         try {
-            return cityRepository.findFirstByName(name);
+            return provinceRepository.findFirstByName(name);
 
         } catch (RuntimeException e) {
             return Optional.empty();
@@ -50,15 +52,29 @@ public class JpaCityService implements CityService {
     }
 
     @Override
-    public void delete(City city) {
-        guardAgainstArgumentNull(city, "city");
-
+    public void delete(Province province) {
+        guardAgainstArgumentNull(province, "province");
         try {
-            cityRepository.delete(city);
+            provinceRepository.delete(province);
 
         } catch (RuntimeException e) {
             // .. log eventually ..
         }
     }
     
+    @Override
+    public Optional<Province> add(String name, Country country) {
+        guardAgainstArgumentNullOrEmpty(name, "name");
+        guardAgainstArgumentNull(country, "country");
+
+        try {
+            var province = new Province();
+            province.setName(name);
+            province.setCountry(country);
+            return Optional.of(provinceRepository.save(province));
+
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
+    }
 }

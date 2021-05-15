@@ -12,6 +12,14 @@
 //
 package moreland.spring.sample.jpademo.services;
 
+import java.util.Optional;
+
+import moreland.spring.sample.jpademo.entities.Country;
+import moreland.spring.sample.jpademo.entities.Province;
+
 public interface CountryService {
     
+    Optional<Country> find(Long id);
+    Optional<Country> findByName(String name);
+    void delete(Country country);
 }

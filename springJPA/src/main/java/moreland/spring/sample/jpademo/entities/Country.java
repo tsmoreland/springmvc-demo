@@ -13,6 +13,7 @@
 
 package moreland.spring.sample.jpademo.entities;
 
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
 
 @Entity
 @Table(name = "countries")
@@ -59,4 +62,13 @@ public class Country {
     public void setProvinces(Set<Province> provinces) {
         this.provinces = provinces;
     }
+
+    public Optional<Province> getProvinceByName(String name) {
+        guardAgainstArgumentNullOrEmpty(name, "name");
+
+        return getProvinces().stream()
+            .filter(p -> p.getName().toLowerCase() == name.toLowerCase())
+            .findFirst();
+    }
+
 }

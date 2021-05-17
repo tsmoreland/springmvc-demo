@@ -22,6 +22,7 @@ import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgument
 import moreland.spring.sample.jpademo.entities.Country;
 import moreland.spring.sample.jpademo.entities.Province;
 import moreland.spring.sample.jpademo.repositories.CountryRepository;
+import moreland.spring.sample.jpademo.repositories.ProvinceRepository;
 
 public class JpaCountryService implements CountryService {
 
@@ -29,7 +30,7 @@ public class JpaCountryService implements CountryService {
     private CountryRepository countryRepository;
 
     @Autowired
-    private ProvinceService provinceService;
+    private ProvinceRepository provinceRepository;
 
     @Override
     public Optional<Country> find(Long id) {
@@ -51,6 +52,40 @@ public class JpaCountryService implements CountryService {
         } catch (RuntimeException e) {
             return Optional.empty();
         }
+    }
+
+
+    public Optional<Province> addProvince(Country country, String name) {
+        guardAgainstArgumentNull(country, "country");
+        return addProvince(country.getId(), name);
+    }
+    public Optional<Province> addProvince(Long countryId, String name) {
+        guardAgainstArgumentNull(countryId, "countryId");
+        guardAgainstArgumentNullOrEmpty(name, "name");
+
+        try {
+
+            var countryWithProvinces = countryRepository.getWithProvincesById(countryId);
+            if (!countryWithProvinces.isPresent()) {
+                return Optional.empty();
+            }
+            var country = countryWithProvinces.get();
+
+            var province = country.getProvinceByName(name);
+            if (province.isPresent()) {
+                return province;
+            }
+
+            var newProvince = Province.create(name, country);
+
+            return Optional.of(provinceRepository.save(newProvince));
+
+        } catch (RuntimeException e) {
+
+            // TODO: replace with more domain specific exception
+            throw e;
+        }
+        
     }
 
     @Override

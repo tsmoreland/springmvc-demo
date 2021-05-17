@@ -27,6 +27,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
+
 @Entity
 @Table(name = "provinces")
 public class Province {
@@ -101,4 +104,14 @@ public class Province {
         return countryName;
     }
 
+    public static Province create(String name, Country country) {
+        guardAgainstArgumentNullOrEmpty(name, "name");
+        guardAgainstArgumentNull(country, "country");
+
+        var province = new Province();
+        province.setName(name);
+        province.setCountry(country);
+
+        return province;
+    }
 }

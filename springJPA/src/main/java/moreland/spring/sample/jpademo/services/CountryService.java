@@ -22,4 +22,8 @@ public interface CountryService {
     Optional<Country> find(Long id);
     Optional<Country> findByName(String name);
     void delete(Country country);
+
+    Optional<Province> addProvince(Long countryId, String name);
+    Optional<Province> addProvince(Country country, String name);
+
 }

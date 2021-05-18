@@ -65,9 +65,10 @@ public class Country {
 
     public Optional<Province> getProvinceByName(String name) {
         guardAgainstArgumentNullOrEmpty(name, "name");
+        final String lowerName = name.toLowerCase();
 
         return getProvinces().stream()
-            .filter(p -> p.getName().toLowerCase() == name.toLowerCase())
+            .filter(p -> p.getName().toLowerCase() == lowerName)
             .findFirst();
     }
 

@@ -23,6 +23,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
+
 @Entity
 @Table(name = "cities")
 public class City {
@@ -76,5 +79,16 @@ public class City {
     }
     public String getProvinceName() {
         return provinceName;
+    }
+
+    public static City create(String name, Province province) {
+        guardAgainstArgumentNullOrEmpty(name, "name");
+        guardAgainstArgumentNull(province, "province");
+
+        var city = new City();
+        city.setName(name);
+        city.setProvince(province);
+
+        return city;
     }
 }

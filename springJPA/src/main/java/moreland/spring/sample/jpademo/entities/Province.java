@@ -13,6 +13,7 @@
 
 package moreland.spring.sample.jpademo.entities;
 
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -102,6 +103,15 @@ public class Province {
 
     public String getCountryName() {
         return countryName;
+    }
+
+    public Optional<City> getCityByName(String name) {
+        guardAgainstArgumentNullOrEmpty(name, "name");
+        final String lowerName = name.toLowerCase();
+
+        return getCities().stream()
+            .filter(p -> p.getName().toLowerCase() == lowerName)
+            .findFirst();
     }
 
     public static Province create(String name, Country country) {

@@ -43,4 +43,10 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
 
     Page<Province> findByCountryNameInOrderByNameAsc(List<String> countryNames, Pageable pageable);
     Page<Province> findByCountryNameInOrderByNameDesc(List<String> countryNames, Pageable pageable);
+
+    @Query("""
+        select distinct p from Province p
+        where p.name = :name and p.countryId = :countryId
+    """)
+    Optional<Province> findByNameAndCountryId(@Param("name") String name, @Param("countryId") Long countryId);
 }

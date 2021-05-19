@@ -14,7 +14,7 @@ package moreland.spring.sample.jpademo.services;
 
 import java.util.Optional;
 
-import moreland.spring.sample.jpademo.entities.Country;
+import moreland.spring.sample.jpademo.entities.City;
 import moreland.spring.sample.jpademo.entities.Province;
 
 public interface ProvinceService {
@@ -23,5 +23,6 @@ public interface ProvinceService {
     Optional<Province> findByName(String name);
     void delete(Province province);
 
-    Optional<Province> add(String name, Country country);
+    Optional<City> addCity(Long provinceId, String name);
+    Optional<City> addCity(Province province, String name);
 }

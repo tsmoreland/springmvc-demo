@@ -19,14 +19,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
 
-import moreland.spring.sample.jpademo.entities.Country;
+import moreland.spring.sample.jpademo.entities.City;
 import moreland.spring.sample.jpademo.entities.Province;
+import moreland.spring.sample.jpademo.repositories.CityRepository;
 import moreland.spring.sample.jpademo.repositories.ProvinceRepository;
+import moreland.spring.sample.jpademo.shared.AddFailureException;
 
 public class JpaProvinceService implements ProvinceService {
 
     @Autowired
     private ProvinceRepository provinceRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     @Override
     public Optional<Province> find(Long id) {
@@ -61,20 +66,31 @@ public class JpaProvinceService implements ProvinceService {
             // .. log eventually ..
         }
     }
-    
-    @Override
-    public Optional<Province> add(String name, Country country) {
-        guardAgainstArgumentNullOrEmpty(name, "name");
-        guardAgainstArgumentNull(country, "country");
 
+    @Override
+    public Optional<City> addCity(Long provinceId, String name) {
+        guardAgainstArgumentNull(provinceId, "provinceId");
+        guardAgainstArgumentNullOrEmpty(name, "name");
         try {
-            var province = new Province();
-            province.setName(name);
-            province.setCountry(country);
-            return Optional.of(provinceRepository.save(province));
+
+            var city = cityRepository.findByNameAndProvinceId(name, provinceId);
+            if (city.isPresent()) {
+                return city;
+            }
+
+            var province = provinceRepository.getOne(provinceId);
+            var newCity = City.create(name, province);
+            return Optional.of(cityRepository.save(newCity));
 
         } catch (RuntimeException e) {
-            return Optional.empty();
+
+            throw new AddFailureException(e);
         }
+    }
+
+    @Override
+    public Optional<City> addCity(Province province, String name) {
+        guardAgainstArgumentNull(province, "province");
+        return addCity(province.getId(), name);
     }
 }

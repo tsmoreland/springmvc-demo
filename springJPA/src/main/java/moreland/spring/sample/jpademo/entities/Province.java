@@ -13,35 +13,62 @@
 
 package moreland.spring.sample.jpademo.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
 
 @Entity
 @Table(name = "provinces")
+@NamedQueries({
+    @NamedQuery(name = Province.FULL_NAMES, query = Province.FULL_NAMES_JPQL),
+    @NamedQuery(name = Province.FULL_NAME, query = Province.FULL_NAME_JPQL)
+})
 public class Province {
     
+    public static final String FULL_NAMES = "province.getFullnames";
+    public static final String FULL_NAMES_JPQL = """
+        select new moreland.spring.sample.jpademo.projections.ProvinceFull(r.name, c.name)
+        from Province p, Country c
+        where p.country.id = c.id
+        """; // don't need the join but doing anyway to have a working example of one
+
+    public static final String FULL_NAME = "province.getFullNameById";
+    public static final String FULL_NAME_JPQL = """
+        select new moreland.spring.sample.jpademo.projections.ProvinceFull(r.name, r.countryName)
+        from Province p
+        where p.id = :id
+        """;
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     private String name;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
     @JoinColumns({
@@ -52,11 +79,13 @@ public class Province {
 
     @Column(insertable = false, updatable = false)
     private Long countryId;
+
     @Column(insertable = false, updatable = false)
     private String countryName;
 
-    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "province")
-    private Set<City> cities;
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY,  mappedBy = "province", cascade = CascadeType.ALL)
+    private List<City> cities = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -74,11 +103,11 @@ public class Province {
         this.name = name;
     }
 
-    public Set<City> getCities() {
+    public List<City> getCities() {
         return cities;
     }
 
-    public void setCities(Set<City> cities) {
+    public void setCities(List<City> cities) {
         this.cities = cities;
     }
 

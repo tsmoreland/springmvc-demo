@@ -47,14 +47,14 @@ import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgument
 })
 public class Province {
     
-    public static final String FULL_NAMES = "province.getFullnames";
+    public static final String FULL_NAMES = "Province.getFullnames";
     public static final String FULL_NAMES_JPQL = """
         select new moreland.spring.sample.jpademo.projections.ProvinceFull(r.name, c.name)
         from Province p, Country c
         where p.country.id = c.id
         """; // don't need the join but doing anyway to have a working example of one
 
-    public static final String FULL_NAME = "province.getFullNameById";
+    public static final String FULL_NAME = "Province.getFullNameById";
     public static final String FULL_NAME_JPQL = """
         select new moreland.spring.sample.jpademo.projections.ProvinceFull(r.name, r.countryName)
         from Province p

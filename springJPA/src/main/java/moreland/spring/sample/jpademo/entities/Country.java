@@ -13,15 +13,21 @@
 
 package moreland.spring.sample.jpademo.entities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
 
@@ -30,14 +36,15 @@ import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgument
 public class Country {
     
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "country")
-    private Set<Province> provinces;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Province> provinces = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -55,11 +62,11 @@ public class Country {
         this.name = name;
     }
 
-    public Set<Province> getProvinces() {
+    public List<Province> getProvinces() {
         return provinces;
     }
 
-    public void setProvinces(Set<Province> provinces) {
+    public void setProvinces(List<Province> provinces) {
         this.provinces = provinces;
     }
 

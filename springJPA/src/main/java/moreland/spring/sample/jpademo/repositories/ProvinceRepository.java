@@ -22,6 +22,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import moreland.spring.sample.jpademo.entities.Province;
+import moreland.spring.sample.jpademo.projections.ProvinceFullname;
 
 public interface ProvinceRepository extends JpaRepository<Province, Long> {
     Optional<Province> findFirstByName(String name);
@@ -49,4 +50,7 @@ public interface ProvinceRepository extends JpaRepository<Province, Long> {
         where p.name = :name and p.countryId = :countryId
     """)
     Optional<Province> findByNameAndCountryId(@Param("name") String name, @Param("countryId") Long countryId);
+
+    Optional<ProvinceFullname> getFullNameById(@Param("id") Long id);
+    List<ProvinceFullname> getFullnames();
 }

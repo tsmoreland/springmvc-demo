@@ -13,12 +13,15 @@
 
 package moreland.spring.sample.jpademo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import moreland.spring.sample.jpademo.entities.City;
 
 public interface CityService {
     
+    City addCity(City city);
+    List<City> findAll();
     Optional<City> find(Long id);
     Optional<City> findByName(String name);
     void delete(City city);

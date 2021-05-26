@@ -13,19 +13,42 @@
 
 package moreland.spring.sample.jpademo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
 import moreland.spring.sample.jpademo.entities.City;
 import moreland.spring.sample.jpademo.repositories.CityRepository;
 
+@Service
 public class JpaCityService implements CityService {
+
+    /*
+     * TODO: 
+     * - add models folder and maybe model/request, model/response
+     * - add city, province and country to each representing the specific request/response
+     *   we expect to see for each - in other words don't resue the entity in the rest
+     *   controller, be specific 
+     */
 
     @Autowired
     private CityRepository cityRepository;
+
+    @Override
+    public List<City> findAll() {
+        return cityRepository.findAll();
+    }
+    
+    @Override
+    public City addCity(City city) {
+        guardAgainstArgumentNull(city, "city");
+        return cityRepository.save(city);
+    }
+
 
     @Override
     public Optional<City> find(Long id) {
@@ -60,5 +83,5 @@ public class JpaCityService implements CityService {
             // .. log eventually ..
         }
     }
-    
+
 }

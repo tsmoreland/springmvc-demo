@@ -15,7 +15,10 @@ package moreland.spring.sample.jpademo.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
@@ -23,7 +26,9 @@ import moreland.spring.sample.jpademo.entities.Country;
 import moreland.spring.sample.jpademo.entities.Province;
 import moreland.spring.sample.jpademo.repositories.CountryRepository;
 import moreland.spring.sample.jpademo.repositories.ProvinceRepository;
+import moreland.spring.sample.jpademo.shared.AddFailureException;
 
+@Service
 public class JpaCountryService implements CountryService {
 
     @Autowired
@@ -64,31 +69,23 @@ public class JpaCountryService implements CountryService {
         guardAgainstArgumentNullOrEmpty(name, "name");
 
         try {
-
-            var countryWithProvinces = countryRepository.getWithProvincesById(countryId);
-            if (!countryWithProvinces.isPresent()) {
-                return Optional.empty();
-            }
-            var country = countryWithProvinces.get();
-
-            var province = country.getProvinceByName(name);
+            var province = provinceRepository.findByNameAndCountryId(name, countryId);
             if (province.isPresent()) {
                 return province;
             }
-
+            var country = countryRepository.getOne(countryId);
             var newProvince = Province.create(name, country);
 
             return Optional.of(provinceRepository.save(newProvince));
 
         } catch (RuntimeException e) {
-
-            // TODO: replace with more domain specific exception
-            throw e;
+            throw new AddFailureException(e);
         }
         
     }
 
     @Override
+    @Transactional
     public void delete(Country country) {
         guardAgainstArgumentNull(country, "country");
         try {

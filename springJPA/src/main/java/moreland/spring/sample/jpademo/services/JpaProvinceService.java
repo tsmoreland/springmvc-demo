@@ -14,7 +14,10 @@ package moreland.spring.sample.jpademo.services;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNull;
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
@@ -25,6 +28,7 @@ import moreland.spring.sample.jpademo.repositories.CityRepository;
 import moreland.spring.sample.jpademo.repositories.ProvinceRepository;
 import moreland.spring.sample.jpademo.shared.AddFailureException;
 
+@Service
 public class JpaProvinceService implements ProvinceService {
 
     @Autowired
@@ -57,6 +61,7 @@ public class JpaProvinceService implements ProvinceService {
     }
 
     @Override
+    @Transactional
     public void delete(Province province) {
         guardAgainstArgumentNull(province, "province");
         try {

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import moreland.spring.sample.jpademo.model.response.ProblemDetail;
 import moreland.spring.sample.jpademo.shared.AddFailureException;
 
 @ControllerAdvice
@@ -29,26 +30,26 @@ public class ExceptionAdvisor {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandler.class);
 
-    // TODO: add ProblemJsonDetails and translate these exceptions, 
-    // see if we can get some additional context in these methods as well such as request
-    // URL
-
-
     @ExceptionHandler(value = { IllegalArgumentException.class })
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e, WebRequest request) {
-        LOGGER.error("Bad request: " + e.getMessage(), e);
-        return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Object>(
+            ProblemDetail.create(HttpStatus.BAD_REQUEST, "Illegal Arguments", e, request, LOGGER),
+            HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = { AddFailureException.class })
     public ResponseEntity<Object> handleAddFailureException(AddFailureException e, WebRequest request) {
         LOGGER.error("Add failure, Bad request: " + e.getMessage(), e);
-        return new ResponseEntity<Object>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Object>(
+            ProblemDetail.create(HttpStatus.BAD_REQUEST, "Invalid object or internal error", e, request, LOGGER),
+            HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = { NoSuchElementException.class })
-    public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e, WebRequest reqeust) {
+    public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException e, WebRequest request) {
         LOGGER.error("Item not found: " + e.getMessage(), e);
-        return new ResponseEntity<Object>(e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Object>(
+            ProblemDetail.create(HttpStatus.NOT_FOUND, "Item not found", e, request, LOGGER),
+            HttpStatus.NOT_FOUND);
     }
 }

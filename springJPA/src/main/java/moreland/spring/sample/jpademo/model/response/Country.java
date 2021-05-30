@@ -10,31 +10,8 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-package moreland.spring.sample.jpademo.internal;
+package moreland.spring.sample.jpademo.model.response;
 
-public class Guard {
+public record Country(Long id, String name) {
     
-    public static void guardAgainstArgumentNull(Object argument, String name) {
-        if (argument == null) {
-            throw new IllegalArgumentException("%s cannot be null".formatted(name));
-        }
-    }
-    public static void guardAgainstArgumentNullOrEmpty(String argument, String name) {
-        guardAgainstArgumentNull(argument, name);
-        if (argument.isEmpty()) {
-            throw new IllegalArgumentException("%s cannot be empty".formatted(name));
-        }
-    }
-
-    public static void guardAgainstArgumentNegative(Long value, String name) {
-        guardAgainstArgumentNull(value, name);
-        if (value.longValue() < 0)
-            throw new IllegalArgumentException("%s must have a postive value".formatted(name));
-
-    }
-    public static void guardAgainstArgumentNegative(Integer value, String name) {
-        guardAgainstArgumentNull(value, name);
-        if (value.intValue() < 0)
-            throw new IllegalArgumentException("%s must have a postive value".formatted(name));
-    }
 }

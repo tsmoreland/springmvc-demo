@@ -12,6 +12,6 @@
 //
 package moreland.spring.sample.jpademo.model.request;
 
-public final record NewCityModel(String name, Long provinceId) {
+public final record CityCreateModel(String name) {
 
 }

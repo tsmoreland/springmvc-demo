@@ -23,6 +23,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -33,8 +35,17 @@ import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgument
 
 @Entity
 @Table(name = "countries")
+@NamedQueries(
+    @NamedQuery(name = Country.GET_ALL, query = Country.GET_ALL_QUERY)
+)
 public class Country {
     
+    public static final String GET_ALL = "Country.getAll";
+    public static final String GET_ALL_QUERY = """
+        select new moreland.spring.sample.jpademo.projections.CountrySummary(c.id, c.name)
+        from Country c
+        """;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -41,16 +41,16 @@ public class City {
     private String name;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @NotNull
     @JoinColumns({
         @JoinColumn(name="provinceId", referencedColumnName="id"),
         @JoinColumn(name="provinceName", referencedColumnName="name")
     })
     private Province province;
-    @Column(insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false, nullable = true)
     private Long provinceId;
-    @Column(insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false, nullable = true)
     private String provinceName;
 
     public Long getId() {

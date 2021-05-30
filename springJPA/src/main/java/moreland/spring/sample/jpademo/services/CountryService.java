@@ -12,16 +12,21 @@
 //
 package moreland.spring.sample.jpademo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import moreland.spring.sample.jpademo.entities.Country;
 import moreland.spring.sample.jpademo.entities.Province;
+import moreland.spring.sample.jpademo.projections.CountrySummary;
 
 public interface CountryService {
     
+    List<CountrySummary> getAll();
     Optional<Country> find(Long id);
     Optional<Country> findByName(String name);
     void delete(Country country);
+
+    Optional<Country> createCountry(String name);
 
     Optional<Province> addProvince(Long countryId, String name);
     Optional<Province> addProvince(Country country, String name);

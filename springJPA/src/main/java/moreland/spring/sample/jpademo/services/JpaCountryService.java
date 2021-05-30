@@ -13,10 +13,13 @@
 
 package moreland.spring.sample.jpademo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +27,14 @@ import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgument
 import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
 import moreland.spring.sample.jpademo.entities.Country;
 import moreland.spring.sample.jpademo.entities.Province;
+import moreland.spring.sample.jpademo.projections.CountrySummary;
 import moreland.spring.sample.jpademo.repositories.CountryRepository;
 import moreland.spring.sample.jpademo.repositories.ProvinceRepository;
-import moreland.spring.sample.jpademo.shared.AddFailureException;
 
 @Service
 public class JpaCountryService implements CountryService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JpaCountryService.class);
 
     @Autowired
     private CountryRepository countryRepository;
@@ -38,11 +43,22 @@ public class JpaCountryService implements CountryService {
     private ProvinceRepository provinceRepository;
 
     @Override
+    public List<CountrySummary> getAll() {
+        try {
+            return countryRepository.getAll();
+        } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
     public Optional<Country> find(Long id) {
         guardAgainstArgumentNull(id, "id");
         try {
             return countryRepository.findById(id);
         } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage(), e);
             return Optional.empty();
         }
 
@@ -55,6 +71,7 @@ public class JpaCountryService implements CountryService {
             return countryRepository.findFirstByName(name);
 
         } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage(), e);
             return Optional.empty();
         }
     }
@@ -79,7 +96,8 @@ public class JpaCountryService implements CountryService {
             return Optional.of(provinceRepository.save(newProvince));
 
         } catch (RuntimeException e) {
-            throw new AddFailureException(e);
+            LOGGER.error(e.getMessage(), e);
+            throw e;
         }
         
     }
@@ -91,7 +109,25 @@ public class JpaCountryService implements CountryService {
         try {
             countryRepository.delete(country);
         } catch (RuntimeException e) {
-            // .. log eventually ..yy
+            LOGGER.error(e.getMessage(), e);
+            throw e;
         }
     }
+
+    @Override
+    @Transactional
+    public Optional<Country> createCountry(String name) {
+        guardAgainstArgumentNullOrEmpty(name, "name");
+        try {
+            var country = new Country();
+            country.setName(name);
+            return Optional.of(countryRepository.save(country));
+
+        } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage(), e);
+            return Optional.empty();
+        }
+
+    }
+
 }

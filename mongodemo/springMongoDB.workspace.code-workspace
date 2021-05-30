@@ -18,7 +18,18 @@
       ".gitignore": true,
       ".classpath": true,
       ".mvn": true
-    }
+    },
+    "yaml.trace.server": "verbose"
+  },
+  "[java]": {
+    "editor.tabsize": 4,
+    "editor.insertspaces": true,
+    "editor.autoIdent": true
+  },
+  "[yaml]": {
+    "editor.tabsize": 2,
+    "editor.insertspaces": true,
+    "editor.autoIdent": true
   },
   "extensions": {
     "recommendations": [

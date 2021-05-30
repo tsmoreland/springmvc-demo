@@ -12,12 +12,14 @@ services:
     networks:
       - backend-network
     volumes: 
-      - postgres-data-volume:/var/lib/postgresql/data
+      - type: volume
+        source: postgres-data-volume
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
 
 networks:
-  backend-network: {}
+  backend-network: 
 
 volumes:
   postgres-data-volume:
-    external:
-      name: postgres-data-volume

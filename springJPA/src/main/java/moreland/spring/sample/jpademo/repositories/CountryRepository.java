@@ -13,6 +13,7 @@
 
 package moreland.spring.sample.jpademo.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -22,11 +23,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import moreland.spring.sample.jpademo.entities.Country;
+import moreland.spring.sample.jpademo.projections.CountrySummary;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
     
     Optional<Country> findFirstByName(String name);
     Page<Country> findByNameContains(String name, Pageable pageable);
+
+    List<CountrySummary> getAll();
 
     @Query("""
         select c from Country c

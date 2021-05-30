@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  mongodb-service:
+    container_name: mongodb-service
+    image: mongo:4.4.6
+    ports:
+    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+    volumes:
+      mongo-data-volume:/data/db
+      mongo-config-volume:/data/configdb
+
+networks:
+  backend-network:
+volumes:
+  mongo-data-volume:
+  mongo-config-voume:

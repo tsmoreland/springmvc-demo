@@ -1,0 +1,51 @@
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: ${MONGODB_PASSWORD}
+      database: locations
+      port: 27017
+      host: localhost
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: create
+
+logging: 
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MonngoTemplate: DEBUG
+
+---
+
+spring:
+  profiles: release
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: ${MONGODB_PASSWORD}
+      database: locations
+      port: 27017
+      host: localhost
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: create
+
+logging: 
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MonngoTemplate: DEBUG

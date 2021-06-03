@@ -1,5 +1,4 @@
 spring:
-  profiles: dev
   data:
     mongodb:
       authentication-database: admin
@@ -22,11 +21,10 @@ logging:
           mongodb:
             core:
               MonngoTemplate: DEBUG
-
 ---
 
 spring:
-  profiles: release
+  profiles: docker
   data:
     mongodb:
       authentication-database: admin
@@ -34,7 +32,7 @@ spring:
       password: ${MONGODB_PASSWORD}
       database: locations
       port: 27017
-      host: localhost
+      host: mongodb-service
   jpa:
     show-sql: true
     properties:

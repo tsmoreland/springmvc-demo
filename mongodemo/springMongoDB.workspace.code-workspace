@@ -19,17 +19,34 @@
       ".classpath": true,
       ".mvn": true
     },
-    "yaml.trace.server": "verbose"
-  },
-  "[java]": {
-    "editor.tabsize": 4,
-    "editor.insertspaces": true,
-    "editor.autoIdent": true
-  },
-  "[yaml]": {
-    "editor.tabsize": 2,
-    "editor.insertspaces": true,
-    "editor.autoIdent": true
+    "yaml.trace.server": "verbose",
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "keep",
+        "gitlens.codeLens.scopes": [
+            "document"
+        ],
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        }
+    },
+    "[java]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.autoIndent": "keep",
+        "gitlens.codeLens.scopes": [
+            "document"
+        ],
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        }
+
+    }
   },
   "extensions": {
     "recommendations": [

@@ -43,8 +43,15 @@ public class Country {
     //@DbRef for joins, not yet sure if it works for list
 
     @DBRef(lazy = true)
-    List<Province> provinces;
+    private List<Province> provinces;
 
     @DBRef(lazy = true)
-    List<State> states;
+    private List<State> states;
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 }

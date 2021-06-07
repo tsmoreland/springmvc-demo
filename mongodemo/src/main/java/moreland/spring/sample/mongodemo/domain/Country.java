@@ -13,6 +13,7 @@
 
 package moreland.spring.sample.mongodemo.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Transient;
@@ -26,7 +27,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collation = "countries")
 public class Country {
-  
+
     @Id
     private String id;
 
@@ -48,10 +49,50 @@ public class Country {
     @DBRef(lazy = true)
     private List<State> states;
 
+    public Country() {
+        this.provinces = new ArrayList<>();
+        this.states = new ArrayList<>();
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
+    public Long getPopulation() {
+        return this.population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
+    public String getLoweredName() {
+        return this.loweredName;
+    }
+
+    public void setLoweredName(String loweredName) {
+        this.loweredName = loweredName;
+    }
+
+    public List<Province> getProvinces() {
+        return this.provinces;
+    }
+    public void setProvinces(List<Province> provinces) {
+        this.provinces = provinces;
+    }
+
+    public void setStates(List<State> states) {
+        this.states = states;
+    }
+  
 }

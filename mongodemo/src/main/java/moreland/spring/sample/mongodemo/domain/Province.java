@@ -12,25 +12,72 @@
 //
 package moreland.spring.sample.mongodemo.domain;
 
-import org.springframework.data.annotation.Id;
+import java.util.List;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document
 public class Province {
-  
-  @Id
-  private String id;
 
-  @Indexed(direction = IndexDirection.ASCENDING, unique = true)
-  private String name;
+    @Indexed(direction = IndexDirection.ASCENDING, unique = true)
+    private String name;
 
-  @Field(name = "population")
-  private Long population;
+    @Field(name = "population")
+    private Long population;
 
-  @Transient
-  private String loweredName;
+    @Transient
+    private String loweredName;
+
+    @DBRef
+    private City capitalCity;
+
+    @DBRef(lazy = true)
+    private List<City> cities;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        name = name != null
+            ? name
+            : "";
+
+        this.name = name;
+        this.loweredName = name.toLowerCase();
+    }
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
+    public String getLoweredName() {
+        return loweredName;
+    }
+
+    public City getCapitalCity() {
+        return capitalCity;
+    }
+
+    public void setCapitalCity(City capitalCity) {
+        this.capitalCity = capitalCity;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
+    }
+
 }

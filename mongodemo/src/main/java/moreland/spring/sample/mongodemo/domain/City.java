@@ -22,15 +22,49 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document
 public class City {
   
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  @Indexed(direction = IndexDirection.ASCENDING, unique = true)
-  private String name;
+    @Indexed(direction = IndexDirection.ASCENDING, unique = true)
+    private String name;
 
-  @Field(name = "population")
-  private Long population;
+    @Field(name = "population")
+    private Long population;
 
-  @Transient
-  private String loweredName;
+    @Transient
+    private String loweredName;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        name = name != null 
+            ?  name
+            : "";
+
+        this.name = name;
+        this.loweredName = name.toLowerCase();
+    }
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
+    public String getLoweredName() {
+        return loweredName;
+    }
+
 }

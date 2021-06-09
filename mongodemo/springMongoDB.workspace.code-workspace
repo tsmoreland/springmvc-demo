@@ -36,16 +36,6 @@
     "[java]": {
         "editor.tabSize": 4,
         "editor.insertSpaces": true,
-        "editor.autoIndent": "keep",
-        "gitlens.codeLens.scopes": [
-            "document"
-        ],
-        "editor.quickSuggestions": {
-            "other": true,
-            "comments": false,
-            "strings": true
-        }
-
     }
   },
   "extensions": {

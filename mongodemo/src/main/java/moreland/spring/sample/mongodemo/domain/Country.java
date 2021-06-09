@@ -16,9 +16,9 @@ package moreland.spring.sample.mongodemo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Transient;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -38,7 +38,7 @@ public class Country {
     @Field(name="population")
     private Long population;
 
-    @Transient // won't be persisted
+    @Transient
     private String loweredName;
     
     //@DbRef for joins, not yet sure if it works for list

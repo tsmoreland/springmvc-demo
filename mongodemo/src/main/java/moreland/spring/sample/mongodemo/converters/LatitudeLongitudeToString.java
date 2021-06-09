@@ -22,7 +22,6 @@ public class LatitudeLongitudeToString implements Converter<LatitudeLongitude, S
     @Override
     public String convert(LatitudeLongitude source) {
         Guard.Against.argumentNull(source, "source");
-
         return "%f, %f".formatted(source.getLatitude(), source.getLongitude());
     }
     

@@ -15,9 +15,12 @@ package moreland.spring.sample.mongodemo.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import moreland.spring.sample.mongodemo.converters.LatitudeLongitudeToString;
@@ -26,6 +29,9 @@ import moreland.spring.sample.mongodemo.converters.StringToLatitudeLongitude;
 @Configuration
 public class ApplicationConfig {
     
+    @Resource
+    private Environment environment;
+
     @Bean
     public MongoCustomConversions customConversions() {
         List<Converter<?, ?>> converters = new ArrayList<>();
@@ -33,4 +39,5 @@ public class ApplicationConfig {
         converters.add(new StringToLatitudeLongitude());
         return new MongoCustomConversions(converters);
     }
+
 }

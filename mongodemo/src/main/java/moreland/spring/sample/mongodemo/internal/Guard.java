@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Guard {
     
-    public class Against {
+    public static class Against {
         public static <T> void argumentNull(T value, String name) { // Object would be fine, I justed wanted to use a generic somewhere
             if (value == null) {
                 throw new IllegalArgumentException("%s cannot be null".formatted(name));

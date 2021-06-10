@@ -53,6 +53,10 @@ public class Country {
         this.provinces = new ArrayList<>();
         this.states = new ArrayList<>();
     }
+    public Country(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public String getId() {
         return this.id;

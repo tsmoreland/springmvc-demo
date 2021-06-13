@@ -23,7 +23,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import moreland.spring.sample.mongodemo.domain.Country;
@@ -33,9 +32,6 @@ import moreland.spring.sample.mongodemo.repositories.CountryRepository;
 @ExtendWith(SpringExtension.class)
 @Import(DatabaseTestConfiguration.class)
 public class CountryRepositoryTests {
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
 
     @Autowired
     private CountryRepository countryRepository;

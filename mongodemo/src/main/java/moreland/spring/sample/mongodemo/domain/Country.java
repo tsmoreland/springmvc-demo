@@ -25,7 +25,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collation = "countries")
+@Document(collection = "countries")
 public class Country {
 
     @Id
@@ -50,12 +50,13 @@ public class Country {
     private List<State> states;
 
     public Country() {
-        this.provinces = new ArrayList<>();
-        this.states = new ArrayList<>();
+        this("", "");
     }
     public Country(String id, String name) {
         this.id = id;
         this.name = name;
+        this.provinces = new ArrayList<>();
+        this.states = new ArrayList<>();
     }
 
     public String getId() {

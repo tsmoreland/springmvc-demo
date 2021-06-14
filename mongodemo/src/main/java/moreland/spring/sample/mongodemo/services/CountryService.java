@@ -10,50 +10,19 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 package moreland.spring.sample.mongodemo.services;
 
 import java.util.Optional;
-import java.util.UUID;
-
-import org.springframework.stereotype.Service;
 
 import moreland.spring.sample.mongodemo.domain.Country;
-import moreland.spring.sample.mongodemo.queries.CountryQueries;
-import moreland.spring.sample.mongodemo.repositories.CountryRepository;
 import moreland.spring.sample.mongodemo.specifications.Specification;
 
-@Service
-public class CountryServiceImpl implements CountryService {
-    
-    private CountryRepository countryRepository;
-    private CountryQueries countryQueries;
+public interface CountryService {
 
-
-    public CountryServiceImpl(CountryRepository countryRepository, CountryQueries countryQueries) {
-        this.countryRepository = countryRepository;
-        this.countryQueries = countryQueries;
-    }
-
-    public Country create(String name) {
-
-        var country = new Country();
-        country.setId(UUID.randomUUID().toString());
-        country.setName(name);
-
-        return countryRepository.insert(country);
-    }
-
-    public Optional<Country> findOneBySpec(Specification specification) {
-        return Optional.of(countryQueries.findOne(specification));
-    }
-
-    @Override
-    public Optional<Country> findById(String id) {
-        return countryRepository.findById(id);
-    }
-
-    @Override
-    public Optional<Country> findByName(String name) {
-        return countryRepository.findByName(name);
-    }
+    Country create(String name);
+    Optional<Country> findOneBySpec(Specification specification);
+    Optional<Country> findById(String id);
+    Optional<Country> findByName(String name);
 }
+

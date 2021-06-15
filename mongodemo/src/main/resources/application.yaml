@@ -5,6 +5,7 @@ spring:
 
 logging:
   level:
-    org:
-      springframework: ERROR
-    root: ERROR
+    root: DEBUG
+    org.springframework.web: DEBUG
+    com.howtodoinjava: DEBUG
+    org.hibernate: DEBUG

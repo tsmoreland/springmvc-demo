@@ -378,3 +378,4 @@ MigrationBackup/
 /csharp/OwinSample/WebApp/lib
 
 .mvn/
+mongodemo/setJavaHome.ps1

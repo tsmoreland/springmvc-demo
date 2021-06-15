@@ -20,7 +20,7 @@
       ".mvn": true
     },
     "yaml.trace.server": "verbose",
-    "xml": {
+    "[xml]": {
         "editor.insertSpaces": true,
         "editor.tabSize": 4,
     },

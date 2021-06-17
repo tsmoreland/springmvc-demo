@@ -38,8 +38,8 @@ public class CountryRepositoryTests {
 
     @BeforeEach
     public void beforeEach() {
-        var canada = new Country("1576624e-8340-4f7e-8b37-ccc6949dfcda", "Dominion of Canada");
-        var uk = new Country("c7f244cd-11d9-4535-8be7-fa85723ee4a4", "United Kingdom");
+        var canada = new Country("1576624e-8340-4f7e-8b37-ccc6949dfcda", "Dominion of Canada", Long.valueOf(30));
+        var uk = new Country("c7f244cd-11d9-4535-8be7-fa85723ee4a4", "United Kingdom", Long.valueOf(60));
         countryRepository.insert(Arrays.asList(canada, uk));
     }
     @AfterEach

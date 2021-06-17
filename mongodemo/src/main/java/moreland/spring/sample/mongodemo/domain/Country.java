@@ -15,7 +15,7 @@ package moreland.spring.sample.mongodemo.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -50,13 +50,31 @@ public class Country {
     private List<State> states;
 
     public Country() {
-        this("", "");
-    }
-    public Country(String id, String name) {
-        this.id = id;
-        this.name = name;
+        this.id = UUID.randomUUID().toString();
+        this.name = "";
+        this.loweredName = "";
+        this.population = Long.valueOf(0);
         this.provinces = new ArrayList<>();
         this.states = new ArrayList<>();
+    }
+    public Country(String id, String name, Long population) {
+        if (id == null || id == "") {
+            throw new IllegalArgumentException("id cannot be null");
+        }
+        if (name == null || name == "") {
+            throw new IllegalArgumentException("name cannot be empty");
+        }
+        if (population == null || population == null || population.longValue() < 0) {
+            throw new IllegalArgumentException("population have a positive value");
+        }
+
+        this.id = id;
+        this.name = name;
+        this.population = population;
+        this.provinces = new ArrayList<>();
+        this.states = new ArrayList<>();
+
+        this.loweredName = name.toLowerCase();
     }
 
     public String getId() {
@@ -71,7 +89,12 @@ public class Country {
         return name;
     }
     public void setName(String name) {
+        if (name == null || name == "") {
+            throw new IllegalArgumentException("Name cannot be empty.");
+        }
+
         this.name = name;
+        this.loweredName = name.toLowerCase();
     }
     public Long getPopulation() {
         return this.population;

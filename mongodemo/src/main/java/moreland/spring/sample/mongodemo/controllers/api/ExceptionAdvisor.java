@@ -16,10 +16,13 @@ import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import moreland.spring.sample.mongodemo.model.response.ProblemDetail;
@@ -44,12 +47,34 @@ public class ExceptionAdvisor {
             HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = { HttpMediaTypeNotSupportedException.class })
+    public ResponseEntity<Object> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, WebRequest request) {
+        LOGGER.error("bad request, unsupported media type: " + e.getMessage(), e);
+        return new ResponseEntity<Object>(
+            ProblemDetail.create(HttpStatus.BAD_REQUEST, "Unsupported content/type", e, request, LOGGER),
+            HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { IncorrectResultSizeDataAccessException.class })
+    public ResponseEntity<Object> handleIncorrectResultSizeDataAccessException(IncorrectResultSizeDataAccessException e, WebRequest request) {
+        LOGGER.error("incorrect data size, likely item not found, " + e.getMessage(), e);
+
+        if (request instanceof ServletWebRequest && ((ServletWebRequest) request).getRequest().getMethod().toUpperCase().equals("GET")) {
+            return new ResponseEntity<Object>(
+                ProblemDetail.create(HttpStatus.NOT_FOUND, "Item not found.", e, request, LOGGER),
+                HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Object>(
+            ProblemDetail.create(HttpStatus.INTERNAL_SERVER_ERROR, "Invalid server error", e, request, LOGGER),
+            HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<Object> handleAddFailureException(Exception e, WebRequest request) {
         LOGGER.error("Internal server request: " + e.getMessage(), e);
         return new ResponseEntity<Object>(
             ProblemDetail.create(HttpStatus.INTERNAL_SERVER_ERROR, "Invalid server error", e, request, LOGGER),
-            HttpStatus.BAD_REQUEST);
+            HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

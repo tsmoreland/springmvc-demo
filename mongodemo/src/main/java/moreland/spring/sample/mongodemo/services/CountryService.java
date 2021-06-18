@@ -16,11 +16,12 @@ package moreland.spring.sample.mongodemo.services;
 import java.util.Optional;
 
 import moreland.spring.sample.mongodemo.domain.Country;
+import moreland.spring.sample.mongodemo.model.request.CountryCreateModel;
 import moreland.spring.sample.mongodemo.specifications.Specification;
 
 public interface CountryService {
 
-    Country create(String name);
+    Country create(CountryCreateModel countryModel);
     Optional<Country> findOneBySpec(Specification specification);
     Optional<Country> findById(String id);
     Optional<Country> findByName(String name);

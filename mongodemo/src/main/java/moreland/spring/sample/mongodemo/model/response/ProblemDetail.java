@@ -46,10 +46,18 @@ public class ProblemDetail {
             logger.warn("Unable to determine request path");
             instance = null;
         }
+        var detail = e.getLocalizedMessage();
+        if (detail == "" || detail == null) {
+            detail = e.getMessage();
+        }
+        if (detail == "" || detail == null) {
+            detail = "";
+        }
+
         return new ProblemDetail(
             URI.create("https://httpstatuses.com/" + status.value()),
             title,
-            e.getLocalizedMessage(),
+            detail,
             Integer.valueOf(status.value()),
             instance);
     }

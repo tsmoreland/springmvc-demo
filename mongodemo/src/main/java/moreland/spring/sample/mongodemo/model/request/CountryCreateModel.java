@@ -12,10 +12,20 @@
 //
 package moreland.spring.sample.mongodemo.model.request;
 
+import javax.validation.constraints.NotBlank;
+
 public class CountryCreateModel {
 
+    @NotBlank
     private String name;
     
+    private Long population;
+
+    public CountryCreateModel() {
+        this.name = "";
+        this.population = Long.valueOf(0);
+    }
+
     public String getName() {
         return name;
     }
@@ -23,4 +33,13 @@ public class CountryCreateModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(Long population) {
+        this.population = population;
+    }
+
 }

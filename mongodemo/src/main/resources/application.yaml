@@ -5,7 +5,6 @@ spring:
 
 logging:
   level:
-    root: DEBUG
-    org.springframework.web: DEBUG
-    com.howtodoinjava: DEBUG
+    root: INFO 
+    org.springframework.web: INFO 
     org.hibernate: DEBUG

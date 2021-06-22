@@ -15,16 +15,9 @@ package moreland.spring.sample.mongodemo.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import com.github.mongobee.Mongobee;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import moreland.spring.sample.mongodemo.converters.LatitudeLongitudeToString;
@@ -33,33 +26,11 @@ import moreland.spring.sample.mongodemo.converters.StringToLatitudeLongitude;
 @Configuration
 public class ApplicationConfig {
     
-    private final Environment environment;
-    private final MongoTemplate mongoTemplate;
-
-    public ApplicationConfig(Environment environment, MongoTemplate mongoTemplate) {
-        this.environment = environment;
-        this.mongoTemplate = mongoTemplate;
-    }
-
     @Bean
     public MongoCustomConversions customConversions() {
         List<Converter<?, ?>> converters = new ArrayList<>();
         converters.add(new LatitudeLongitudeToString());
         converters.add(new StringToLatitudeLongitude());
         return new MongoCustomConversions(converters);
-    }
-
-    @Bean
-    public Mongobee mongobee() {
-        var mongoUri = environment.getProperty("spring.data.mongodb.uri");
-
-        var runner = new Mongobee(mongoUri);
-        runner.setEnabled(true);
-        runner.setChangeLogsScanPackage("moreland.spring.sample.mongodemo.migrations");
-        runner.setChangelogCollectionName("migrations");
-        runner.setLockCollectionName("migrationLock");
-        
-        runner.setMongoTemplate(mongoTemplate);
-        return runner;
     }
 }

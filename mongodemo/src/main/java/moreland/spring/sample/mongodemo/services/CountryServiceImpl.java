@@ -18,6 +18,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import moreland.spring.sample.mongodemo.domain.Country;
+import moreland.spring.sample.mongodemo.model.request.CountryCreateModel;
 import moreland.spring.sample.mongodemo.queries.CountryQueries;
 import moreland.spring.sample.mongodemo.repositories.CountryRepository;
 import moreland.spring.sample.mongodemo.specifications.Specification;
@@ -34,12 +35,11 @@ public class CountryServiceImpl implements CountryService {
         this.countryQueries = countryQueries;
     }
 
-    public Country create(String name) {
-
-        var country = new Country();
-        country.setId(UUID.randomUUID().toString());
-        country.setName(name);
-
+    public Country create(CountryCreateModel countryModel) {
+        var country = new Country(
+            UUID.randomUUID().toString(),
+            countryModel.getName(),
+            countryModel.getPopulation());
         return countryRepository.insert(country);
     }
 

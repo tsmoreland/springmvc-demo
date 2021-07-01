@@ -26,11 +26,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import moreland.spring.sample.jpademo.entities.City;
-import moreland.spring.sample.jpademo.model.request.NewCityModel;
+import moreland.spring.sample.jpademo.model.request.CityCreateModel;
 import moreland.spring.sample.jpademo.model.response.CityModel;
 import moreland.spring.sample.jpademo.services.CityMapper;
 import moreland.spring.sample.jpademo.services.CityService;
 import moreland.spring.sample.jpademo.services.ProvinceService;
+
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNullOrEmpty;
+import static moreland.spring.sample.jpademo.internal.Guard.guardAgainstArgumentNegative;
 
 @RestController
 public class CityController {
@@ -44,7 +47,11 @@ public class CityController {
     @Autowired
     private CityMapper cityMapper;
 
-    @GetMapping("api/cities")
+    @GetMapping(
+        value = "api/cities",
+        produces = { "application/json", "application/xml" },
+        consumes = { "application/json", "application/xml" }
+    )
     public List<City> getCities() {
         return cityService.findAll();
     }
@@ -59,15 +66,18 @@ public class CityController {
     }
 
     @PostMapping(
-        value = "api/cities", 
+        value = "api/provinces/{provinceId}/cities", 
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    public CityModel addCity(@Valid @ModelAttribute @RequestBody NewCityModel city, BindingResult bindingResult) {
+    public CityModel createCityWithProvince(@PathVariable Long provinceId, @Valid @ModelAttribute @RequestBody CityCreateModel city, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException(); // add new exception so we can include these in error response
         }
-        return cityMapper.mapCityToCityModel(provinceService.addCity(city.provinceId(), city.name()).get());
-    }
 
+        guardAgainstArgumentNegative(provinceId, "provinceId");
+        guardAgainstArgumentNullOrEmpty(city.name(), "city");
+
+        return cityMapper.mapCityToCityModel(provinceService.addCity(provinceId, city.name()).get());
+    }
 }

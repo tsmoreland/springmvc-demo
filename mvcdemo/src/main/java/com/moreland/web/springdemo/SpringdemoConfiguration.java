@@ -135,7 +135,7 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 
         em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] { "com.baeldung.books.models" });
+        em.setPackagesToScan(new String[] { "com.moreland.data.hibernate" });
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         em.setJpaProperties(additionalProperties());
         return em;
@@ -151,10 +151,13 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
 
         }
 
-
         if (env.getProperty("hibernate.dialect") != null) {
             hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+
+        } else {
+            hibernateProperties.setProperty("hibernate.dialect", "com.moreland.data.hibernate.dialects.SqliteDialect");
         }
+
         if (env.getProperty("hibernate.show_sql") != null) {
             hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         }

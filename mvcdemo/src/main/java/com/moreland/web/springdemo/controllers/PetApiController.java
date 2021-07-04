@@ -41,10 +41,11 @@ public class PetApiController {
         if (name.isBlank()) {
             throw new Exception("not found"); // TODO: replace with a more specific excpetion and add exception advisor to provide better repsonse
         }
-        var sanaitizedName = Encode.forJavaScript(name);
-        var pet = new Pet(sanaitizedName, Species.RABBIT, Gender.Female);
+        var sanaitizedName = name != null && !name.isBlank() 
+            ? Encode.forJavaScript(Encode.forHtml(name))
+            : "";
 
-        // deepcode ignore XSS: theory: the above sanitization should prevent XSS by removing/replacing any offending characters
+        var pet = new Pet(sanaitizedName, Species.RABBIT, Gender.Female);
         return EntityModel.of(pet,
             linkTo(methodOn(PetApiController.class).getPet("Bunny")).withSelfRel(),
             linkTo(methodOn(PetApiController.class).getPets()).withRel("pet"));

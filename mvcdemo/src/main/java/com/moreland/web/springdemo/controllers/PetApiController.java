@@ -12,7 +12,6 @@
 //
 package com.moreland.web.springdemo.controllers;
 
-import com.moreland.web.springdemo.internal.AntiXss;
 import com.moreland.web.springdemo.models.Gender;
 import com.moreland.web.springdemo.models.Pet;
 import com.moreland.web.springdemo.models.Species;

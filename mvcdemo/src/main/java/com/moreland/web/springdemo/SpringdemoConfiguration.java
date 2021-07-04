@@ -126,6 +126,7 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
         dataSource.setDriverClassName("org.sqlite.JDBC");
         dataSource.setUrl("jdbc:sqlite:memory:myDb?cache=shared");
         dataSource.setUsername("sa");
+        // deepcode ignore HardcodedPassword: demo app, and password is insecure anyway
         dataSource.setPassword("sa");
         return dataSource;
     }

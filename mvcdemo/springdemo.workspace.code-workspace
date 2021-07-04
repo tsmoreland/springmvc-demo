@@ -18,6 +18,10 @@
       ".gitignore": true,
       ".classpath": true,
       ".mvn": true
+    },
+    "[java]": {
+      "editor.tabSize": 4,
+      "editor.insertSpaces": true
     }
   },
   "extensions": {

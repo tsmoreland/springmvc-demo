@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -36,7 +37,10 @@ import java.util.List;
 public class PetApiController {
     
     @GetMapping("/api/pet/{name}")
-    public EntityModel<Pet> getPet(@PathVariable(value="name") String name) {
+    public EntityModel<Pet> getPet(@PathVariable(value="name") String name) throws Exception {
+        if (name.isBlank()) {
+            throw new Exception("not found"); // TODO: replace with a more specific excpetion and add exception advisor to provide better repsonse
+        }
         return EntityModel.of(new Pet(Encode.forJavaScript(name), Species.RABBIT, Gender.Female),
             linkTo(methodOn(PetApiController.class).getPet("Bunny")).withSelfRel(),
             linkTo(methodOn(PetApiController.class).getPets()).withRel("pet"));

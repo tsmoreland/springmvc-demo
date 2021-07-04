@@ -16,6 +16,7 @@ import com.moreland.web.springdemo.models.Gender;
 import com.moreland.web.springdemo.models.Pet;
 import com.moreland.web.springdemo.models.Species;
 
+import org.owasp.encoder.Encode;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +37,7 @@ public class PetApiController {
     
     @GetMapping("/api/pet/{name}")
     public EntityModel<Pet> getPet(@PathVariable(value="name") String name) {
-
-        return EntityModel.of(new Pet(name, Species.RABBIT, Gender.Female),
+        return EntityModel.of(new Pet(Encode.forJavaScript(name), Species.RABBIT, Gender.Female),
             linkTo(methodOn(PetApiController.class).getPet("Bunny")).withSelfRel(),
             linkTo(methodOn(PetApiController.class).getPets()).withRel("pet"));
     }

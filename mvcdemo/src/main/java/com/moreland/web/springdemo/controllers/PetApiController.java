@@ -12,6 +12,7 @@
 //
 package com.moreland.web.springdemo.controllers;
 
+import com.moreland.web.springdemo.internal.AntiXss;
 import com.moreland.web.springdemo.models.Gender;
 import com.moreland.web.springdemo.models.Pet;
 import com.moreland.web.springdemo.models.Species;
@@ -41,7 +42,11 @@ public class PetApiController {
         if (name.isBlank()) {
             throw new Exception("not found"); // TODO: replace with a more specific excpetion and add exception advisor to provide better repsonse
         }
-        return EntityModel.of(new Pet(Encode.forJavaScript(name), Species.RABBIT, Gender.Female),
+        var sanaitizedName = Encode.forJavaScript(name);
+        var pet = new Pet(sanaitizedName, Species.RABBIT, Gender.Female);
+
+        // deepcode ignore XSS: theory: the above sanitization should prevent XSS by removing/replacing any offending characters
+        return EntityModel.of(pet,
             linkTo(methodOn(PetApiController.class).getPet("Bunny")).withSelfRel(),
             linkTo(methodOn(PetApiController.class).getPets()).withRel("pet"));
     }

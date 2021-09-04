@@ -3,7 +3,7 @@ package com.moreland.web.springdemo.security.xss;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import org.unbescape.json.JsonEscape;
+import org.owasp.encoder.Encode;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ public class XssStringJsonSerializer extends JsonSerializer<String> {
         if (value == null) {
             return;
         }
-        var encoded = JsonEscape.escapeJson(value);
+        var encoded = Encode.forJavaScript(Encode.forHtml(value));
         gen.writeString(encoded);
     }
 

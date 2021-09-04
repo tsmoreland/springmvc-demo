@@ -64,8 +64,7 @@ public class PetApiController {
 
     @PostMapping("/api/pet")
     public Pet addPet(Pet pet) {
-        var reflectedPet = new Pet(Encode.forJavaScript(pet.getName()), pet.getSpecies(), pet.getGender());
-        return reflectedPet;
+        return new Pet("Storm", Species.CAT, Gender.Female);
     }
 
     @PutMapping("/api/pet")

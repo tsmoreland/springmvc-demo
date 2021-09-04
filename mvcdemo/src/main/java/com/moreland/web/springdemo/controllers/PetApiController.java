@@ -19,6 +19,7 @@ import com.moreland.web.springdemo.models.Species;
 import org.owasp.encoder.Encode;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -34,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/pet", produces = { MediaType.APPLICATION_JSON_VALUE })
 public class PetApiController {
     
     @GetMapping("/api/pet/{name}")
@@ -61,7 +64,8 @@ public class PetApiController {
 
     @PostMapping("/api/pet")
     public Pet addPet(Pet pet) {
-        return pet;
+        var reflectedPet = new Pet(Encode.forJavaScript(pet.getName()), pet.getSpecies(), pet.getGender());
+        return reflectedPet;
     }
 
     @PutMapping("/api/pet")

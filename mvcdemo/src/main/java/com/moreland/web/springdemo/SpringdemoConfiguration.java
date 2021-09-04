@@ -17,11 +17,16 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.moreland.web.springdemo.security.xss.XssStringJsonSerializer;
 import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -84,6 +89,18 @@ public class SpringdemoConfiguration implements WebMvcConfigurer {
             .addResourceHandler("/scripts/**")
             .addResourceLocations("/WEB-INF/pdf");
     }
+
+    @Bean
+    @Primary
+    public ObjectMapper xssObjectMapper(Jackson2ObjectMapperBuilder builder) {
+        var xssModule = new SimpleModule("XssStringJsonSerializer");
+        xssModule.addSerializer(new XssStringJsonSerializer());
+
+        var mapper = builder.createXmlMapper(false).build();
+        mapper.registerModule(xssModule);
+        return mapper;
+    }
+
 
     @Bean
     public SpringResourceTemplateResolver templateResolver() {

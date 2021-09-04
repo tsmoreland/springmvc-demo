@@ -12,7 +12,7 @@
 //
 package com.moreland.web.springdemo.security.xss;
 
-import org.unbescape.json.JsonEscape;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -25,12 +25,12 @@ public class XssHttpServerRequestWrapper extends HttpServletRequestWrapper {
 
     @Override
     public String getHeader(String name) {
-        return JsonEscape.escapeJson(super.getHeader(name));
+        return Encode.forJavaScript(Encode.forHtml(super.getHeader(name)));
     }
 
     @Override
     public String getParameter(String name) {
-        return JsonEscape.escapeJson(super.getParameter(name));
+        return Encode.forJavaScript(Encode.forHtml(super.getParameter(name)));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class XssHttpServerRequestWrapper extends HttpServletRequestWrapper {
         }
         var escapedValues = new String[values.length];
         for (int i=0; i< values.length; i++) {
-            escapedValues[i] = JsonEscape.escapeJson(values[i]);
+            escapedValues[i] = Encode.forJavaScript(Encode.forHtml(values[i]));
         }
         return escapedValues;
     }

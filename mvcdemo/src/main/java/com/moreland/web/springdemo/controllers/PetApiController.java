@@ -69,7 +69,7 @@ public class PetApiController {
 
     @PutMapping("/api/pet")
     public Pet updatePet(Pet pet) {
-        return pet;
+        return new Pet("Chi Chi", Species.RABBIT, Gender.Female);
     }
 
     @DeleteMapping("/api/pet/{name}")

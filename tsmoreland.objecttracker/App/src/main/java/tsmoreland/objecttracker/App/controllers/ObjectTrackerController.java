@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -110,6 +111,19 @@ public class ObjectTrackerController {
             case 2 -> ResponseEntity.ok(List.<LogModel>of(
                 new LogModel(0, "first message for John"),
                 new LogModel(1, "second message for John")));
+            default -> ResponseEntity.notFound().build();
+        };
+    }
+
+    @DeleteMapping(
+        value = "objects/{id}", 
+        produces = { "application/json", "application/xml" },
+        consumes = { "application/json", "application/xml" }
+    )
+    public ResponseEntity<?> deleteObject(@PathVariable int id) {
+        return switch(id) {
+            case 1 -> ResponseEntity.noContent().build();
+            case 2 -> ResponseEntity.noContent().build();
             default -> ResponseEntity.notFound().build();
         };
     }

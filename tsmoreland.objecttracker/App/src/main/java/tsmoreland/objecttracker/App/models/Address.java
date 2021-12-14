@@ -12,10 +12,21 @@
 //
 package tsmoreland.objecttracker.App.models;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Address {
     
+    @Min(1)
     private int houseNumber;
+
+    @NotNull
+    @Size(min = 3, max = 200)
     private String street;
+
+    @NotNull
+    @Size(min = 6, max = 20)
     public String postCode;
 
     public Address(int houseNumber, String street, String postCode) {

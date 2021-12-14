@@ -12,8 +12,13 @@
 //
 package tsmoreland.objecttracker.App.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class ObjectAddModel {
     
+    @NotNull
+    @Size(min = 3, max = 200)
     private String name;
     private Address address;
 

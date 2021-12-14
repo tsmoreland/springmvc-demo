@@ -78,4 +78,39 @@ public class ObjectTrackerController {
         };
 
     }
+
+    @PostMapping(
+        value = "objects/{id}/logs", 
+        produces = { "application/json", "application/xml" },
+        consumes = { "application/json", "application/xml" }
+    )
+    public ResponseEntity<?> putLog(@PathVariable int id, @Validated @ModelAttribute @RequestBody LogModel model, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new IllegalArgumentException(); // add new exception so we can include these in error response
+        }
+
+        return switch(id) {
+            case 1 -> new ResponseEntity<>(model, HttpStatus.CREATED);
+            case 2 -> new ResponseEntity<>(model, HttpStatus.CREATED);
+            default -> ResponseEntity.notFound().build();
+        };
+    }
+
+    @GetMapping(
+        value = "objects/{id}/logs", 
+        produces = { "application/json", "application/xml" },
+        consumes = { "application/json", "application/xml" }
+    )
+    public ResponseEntity<List<LogModel>> getLogs(@PathVariable int id) {
+
+        return switch(id) {
+            case 1 -> ResponseEntity.ok(List.<LogModel>of(
+                new LogModel(0, "first message for Fred"),
+                new LogModel(1, "second message for Fred")));
+            case 2 -> ResponseEntity.ok(List.<LogModel>of(
+                new LogModel(0, "first message for John"),
+                new LogModel(1, "second message for John")));
+            default -> ResponseEntity.notFound().build();
+        };
+    }
 }

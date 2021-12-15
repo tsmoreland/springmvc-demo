@@ -11,7 +11,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-package tsmoreland.objecttracker.App.controllers;
+package tsmoreland.objecttracker.app.controllers;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -29,11 +29,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tsmoreland.objecttracker.App.models.Address;
-import tsmoreland.objecttracker.App.models.LogModel;
-import tsmoreland.objecttracker.App.models.ObjectAddModel;
-import tsmoreland.objecttracker.App.models.ObjectModel;
-import tsmoreland.objecttracker.App.models.ObjectSummaryModel;
+import tsmoreland.objecttracker.app.models.Address;
+import tsmoreland.objecttracker.app.models.LogModel;
+import tsmoreland.objecttracker.app.models.ObjectAddModel;
+import tsmoreland.objecttracker.app.models.ObjectModel;
+import tsmoreland.objecttracker.app.models.ObjectSummaryModel;
 
 @RestController
 public class ObjectTrackerController {

@@ -380,3 +380,5 @@ MigrationBackup/
 .mvn/
 mongodemo/setJavaHome.ps1
 .dccache
+
+objecttracker.db

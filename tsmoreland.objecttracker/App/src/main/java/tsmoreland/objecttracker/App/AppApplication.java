@@ -19,6 +19,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages= "tsmoreland.objecttracker.data")
+//@ComponentScan(basePackages= "tsmoreland.objecttracker.app.config")
 public class AppApplication {
 
 	public static void main(String[] args) {

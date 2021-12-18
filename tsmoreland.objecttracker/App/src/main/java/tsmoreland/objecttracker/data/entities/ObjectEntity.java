@@ -12,11 +12,18 @@
 //
 package tsmoreland.objecttracker.data.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.criteria.Fetch;
 
 @Entity
 @Table(name = "Objects")
@@ -35,6 +42,13 @@ public class ObjectEntity {
 
     @Column(name = "Progress", nullable = false, unique = false)
     private Integer progress = Integer.valueOf(0);
+
+    
+    @OneToMany(
+        mappedBy = "objectEntity", 
+        fetch = FetchType.LAZY,
+        orphanRemoval = true)
+    private List<LogEntryEntity> logEntries = new ArrayList<>();
 
     public ObjectEntity(Long id, String name, String lastModified, Integer progress) {
         this.id = id;

@@ -20,9 +20,13 @@ import org.springframework.stereotype.Repository;
 
 import tsmoreland.objecttracker.data.entities.LogEntryEntity;
 import tsmoreland.objecttracker.data.entities.ObjectEntity;
+import tsmoreland.objecttracker.data.projections.ObjectEntitySummaryView;
 
 @Repository
 public interface ObjectRepository extends PagingAndSortingRepository<ObjectEntity, Long> {
+
+    Page<ObjectEntitySummaryView> findAllViews(Pageable pageable);
+
     @Query(
         value = "select l from LogEntity l where l.ObjectEntityId = :id")
     Page<LogEntryEntity> findLogsByObjectEntityId(Long id, Pageable pageable);

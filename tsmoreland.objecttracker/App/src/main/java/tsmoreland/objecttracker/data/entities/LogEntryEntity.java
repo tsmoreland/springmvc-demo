@@ -21,6 +21,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import tsmoreland.objecttracker.core.models.LogEntry;
+import tsmoreland.objecttracker.core.models.Severity;
+
 @Entity
 @Table(name = "LogEntity")
 public class LogEntryEntity {
@@ -28,10 +31,10 @@ public class LogEntryEntity {
     @Id
     @GeneratedValue
     @Column(name = "Id", nullable = false, unique = true)
-    private Long id;
+    private Long id = Long.valueOf(0);
     
     @Column(name = "Message", nullable = false, unique = false)
-    private String message;
+    private String message = "";
 
     @Column(name = "Severity", nullable = false, unique = false)
     private Integer severity = Integer.valueOf(0);
@@ -40,4 +43,54 @@ public class LogEntryEntity {
     @JoinColumn(name = "ObjectEntityId")
     private ObjectEntity objectEntity;
 
+    public LogEntryEntity() {
+
+    }
+    public LogEntryEntity(String message, Integer severity,  ObjectEntity objectEntity) {
+        this.message = message;
+        this.severity = severity;
+        this.objectEntity = objectEntity;
+    }
+    public LogEntryEntity(Long id, String message, Integer severity,  ObjectEntity objectEntity) {
+        this.id = id;
+        this.message = message;
+        this.severity = severity;
+        this.objectEntity = objectEntity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Integer getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(Integer severity) {
+        this.severity = severity;
+    }
+
+    public ObjectEntity getObjectEntity() {
+        return objectEntity;
+    }
+
+    public void setObjectEntity(ObjectEntity objectEntity) {
+        this.objectEntity = objectEntity;
+    }
+
+    public LogEntry ToLogEntry() {
+        return new LogEntry(message, Severity.FromInteger(severity));
+    }
 }

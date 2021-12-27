@@ -26,7 +26,7 @@ public interface ObjectDataService {
     
     ObjectModel addObjectModel(ObjectModel model);
 
-    Optional<ObjectSummaryModel> findById(Long id);
+    Optional<ObjectModel> findById(Long id, boolean includeLogs);
     Page<ObjectSummaryModel> findAll(Pageable page);
     Page<LogEntry> findAllLogs(Long id, Pageable page);
 

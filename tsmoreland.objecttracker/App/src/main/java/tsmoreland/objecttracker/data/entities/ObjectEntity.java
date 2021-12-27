@@ -14,6 +14,8 @@ package tsmoreland.objecttracker.data.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +24,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import tsmoreland.objecttracker.core.models.LogEntry;
+import tsmoreland.objecttracker.core.models.ObjectModel;
 
 @Entity
 @Table(name = "Objects")
@@ -41,7 +46,6 @@ public class ObjectEntity {
     @Column(name = "Progress", nullable = false, unique = false)
     private Integer progress = Integer.valueOf(0);
 
-    
     @OneToMany(
         mappedBy = "objectEntity", 
         fetch = FetchType.LAZY,
@@ -93,5 +97,20 @@ public class ObjectEntity {
 
     public void setProgress(Integer progress) {
         this.progress = progress;
+    }
+
+    public void addLogEntry(LogEntry model) {
+        logEntries.add(new LogEntryEntity(model.message(), model.severity().asInteger(), this));
+    }
+
+    public ObjectModel ToObjectModel(boolean includeLogs) {
+        if (!includeLogs) {
+            return new ObjectModel(Optional.of(id), name, progress.intValue(), List.of());
+        }
+
+        var logEntyModels = logEntries.stream()
+            .map(LogEntryEntity::ToLogEntry)
+            .collect(Collectors.toList());
+        return  new ObjectModel(Optional.of(id), name, progress.intValue(), logEntyModels);
     }
 }

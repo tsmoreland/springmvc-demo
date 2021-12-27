@@ -36,7 +36,7 @@ public class DatabaseObjectDataService implements ObjectDataService {
     }
 
     @Override
-    public Optional<ObjectSummaryModel> findById(Long id) {
+    public Optional<ObjectModel> findById(Long id, boolean includeLogs) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -61,14 +61,12 @@ public class DatabaseObjectDataService implements ObjectDataService {
 
     @Override
     public void deleteObjectModel(Long id) {
-        // TODO Auto-generated method stub
-        
+        repository.deleteById(id);
     }
 
     @Override
     public void deleteObjectModel(ObjectModel model) {
         // TODO Auto-generated method stub
-        
     }
     
 }

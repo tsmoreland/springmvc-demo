@@ -115,34 +115,14 @@ public class LogEntryEntity {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
+
+        if (!(obj instanceof LogEntryEntity other)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        LogEntryEntity other = (LogEntryEntity) obj;
-        if (message == null) {
-            if (other.message != null) {
-                return false;
-            }
-        } else if (!message.equals(other.message)) {
-            return false;
-        }
-        if (objectEntity == null) {
-            if (other.objectEntity != null) {
-                return false;
-            }
-        } else if (!objectEntity.equals(other.objectEntity)) {
-            return false;
-        }
-        if (severity == null) {
-            if (other.severity != null) {
-                return false;
-            }
-        } else if (!severity.equals(other.severity)) {
-            return false;
-        }
-        return true;
+
+        return
+            ComparisonUtilities.areEqual(message, other.message) &&
+            ComparisonUtilities.areEqual(message, other.objectEntity) &&
+            ComparisonUtilities.areEqual(message, other.severity); 
     }
 }

@@ -23,6 +23,7 @@ import javax.persistence.Table;
 
 import tsmoreland.objecttracker.core.models.LogEntry;
 import tsmoreland.objecttracker.core.models.Severity;
+import tsmoreland.objecttracker.shared.ComparisonUtilities;
 
 @Entity
 @Table(name = "LogEntity")
@@ -55,6 +56,11 @@ public class LogEntryEntity {
         this.id = id;
         this.message = message;
         this.severity = severity;
+        this.objectEntity = objectEntity;
+    }
+    public LogEntryEntity(LogEntry model, ObjectEntity objectEntity) {
+        this.message = model.message();
+        this.severity = model.severity().asInteger();
         this.objectEntity = objectEntity;
     }
 
@@ -92,5 +98,51 @@ public class LogEntryEntity {
 
     public LogEntry ToLogEntry() {
         return new LogEntry(message, Severity.FromInteger(severity));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = ComparisonUtilities.updateHashCode(result, prime, message);
+        result = ComparisonUtilities.updateHashCode(result, prime, objectEntity);
+        result = ComparisonUtilities.updateHashCode(result, prime, severity);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        LogEntryEntity other = (LogEntryEntity) obj;
+        if (message == null) {
+            if (other.message != null) {
+                return false;
+            }
+        } else if (!message.equals(other.message)) {
+            return false;
+        }
+        if (objectEntity == null) {
+            if (other.objectEntity != null) {
+                return false;
+            }
+        } else if (!objectEntity.equals(other.objectEntity)) {
+            return false;
+        }
+        if (severity == null) {
+            if (other.severity != null) {
+                return false;
+            }
+        } else if (!severity.equals(other.severity)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -5,7 +5,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.1</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.moreland.web</groupId>
     <artifactId>springdemo</artifactId>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
-            <version>3.0.13.RELEASE</version>
+            <version>3.0.14.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.tinylog</groupId>

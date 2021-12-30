@@ -12,6 +12,8 @@
 //
 package tsmoreland.objecttracker.data.entities;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,18 +54,19 @@ public class ObjectEntity {
         orphanRemoval = true)
     private List<LogEntryEntity> logEntries = new ArrayList<>();
 
-    public ObjectEntity(Long id, String name, String lastModified, Integer progress) {
+    public ObjectEntity(Long id, String name, Integer progress, String lastModified) {
         this.id = id;
         this.name = name;
-        this.lastModified = lastModified;
         this.progress = progress;
+        this.lastModified = lastModified;
     }
 
     public ObjectEntity() {
         id = Long.valueOf(0);
         name = "";
-        lastModified = "0001-01-01 00:00:00";
         progress = Integer.valueOf(0);
+        // keep this value sipmle, attempts to calculate it using current time break the build
+        lastModified = "0001-01-01 00:00:00";
     }
 
 
@@ -103,6 +106,20 @@ public class ObjectEntity {
         logEntries.add(new LogEntryEntity(model.message(), model.severity().asInteger(), this));
     }
 
+    public void Update(ObjectModel model) {
+        name = model.getName();
+        progress = Integer.valueOf(model.getProgress());
+
+        for (LogEntry entry : model.getLogEntries()) {
+            LogEntryEntity entity = new LogEntryEntity(entry, this);
+            if (!this.logEntries.contains(entity)) {
+                continue; // already present
+            } else {
+                logEntries.add(entity);
+            }
+        }
+    }
+
     public ObjectModel ToObjectModel(boolean includeLogs) {
         if (!includeLogs) {
             return new ObjectModel(Optional.of(id), name, progress.intValue(), List.of());
@@ -112,5 +129,31 @@ public class ObjectEntity {
             .map(LogEntryEntity::ToLogEntry)
             .collect(Collectors.toList());
         return  new ObjectModel(Optional.of(id), name, progress.intValue(), logEntyModels);
+    }
+
+    public static ObjectEntity FromObjectModel(ObjectModel model) {
+
+        Long id = model.getId().orElse(Long.valueOf(0));
+        String name = model.getName();
+        Integer progress = Integer.valueOf(model.getProgress());
+        String lastModified = getNowAsFormattedString();
+
+        var entity = new ObjectEntity(id, name, progress, lastModified);
+
+        for (LogEntry entry : model.getLogEntries()) {
+            LogEntryEntity logEntity = new LogEntryEntity(entry, entity);
+            if (!entity.logEntries.contains(logEntity)) {
+                continue; // already present
+            } else {
+                entity.logEntries.add(logEntity);
+            }
+        }
+        return entity;
+    }
+
+    private static String getNowAsFormattedString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Instant now = Instant.now();
+        return formatter.format(now);
     }
 }

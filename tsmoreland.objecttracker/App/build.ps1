@@ -1,0 +1,1 @@
+& mvn -B package -D'flyway.configFiles=flyway.conf' -e -X

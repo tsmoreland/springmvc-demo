@@ -20,5 +20,13 @@ public final class ComparisonUtilities {
             : object.hashCode());
     }
 
-
+    public static boolean areEqual(final Object left, final Object right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (right == null) {
+            return false;
+        }
+        return left.equals(right);
+    }
 }

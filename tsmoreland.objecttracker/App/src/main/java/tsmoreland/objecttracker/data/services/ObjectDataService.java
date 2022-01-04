@@ -13,9 +13,9 @@
 package tsmoreland.objecttracker.data.services;
 
 
+import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import tsmoreland.objecttracker.core.models.LogEntry;
@@ -27,8 +27,8 @@ public interface ObjectDataService {
     ObjectModel addObjectModel(ObjectModel model);
 
     Optional<ObjectModel> findById(Long id, boolean includeLogs);
-    Page<ObjectSummaryModel> findAll(Pageable page);
-    Page<LogEntry> findAllLogs(Long id, Pageable page);
+    List<ObjectSummaryModel> findAll(Pageable page);
+    List<LogEntry> findAllLogs(Long id, Pageable page);
 
     void updateObjectModel(ObjectModel model);
     void deleteObjectModel(Long id);

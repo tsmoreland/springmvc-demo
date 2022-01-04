@@ -12,17 +12,22 @@
 //
 package tsmoreland.objecttracker.data.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import tsmoreland.objecttracker.core.models.LogEntry;
 import tsmoreland.objecttracker.core.models.ObjectModel;
+import tsmoreland.objecttracker.core.models.Severity;
 import tsmoreland.objecttracker.core.projections.ObjectSummaryModel;
+import tsmoreland.objecttracker.data.entities.ObjectEntity;
 import tsmoreland.objecttracker.data.repositories.ObjectRepository;
 
+//@Service
 public class DatabaseObjectDataService implements ObjectDataService {
 
     @Autowired
@@ -31,32 +36,53 @@ public class DatabaseObjectDataService implements ObjectDataService {
 
     @Override
     public ObjectModel addObjectModel(ObjectModel model) {
-        // TODO Auto-generated method stub
-        return null;
+        return repository
+            .save(ObjectEntity.FromObjectModel(model))
+            .ToObjectModel(false);
     }
 
     @Override
     public Optional<ObjectModel> findById(Long id, boolean includeLogs) {
-        // TODO Auto-generated method stub
+        return repository.findById(id).map(o -> o.ToObjectModel(includeLogs));
+    }
+
+    @Override
+    public List<ObjectSummaryModel> findAll(Pageable page) {
+        /*
+        return repository
+            .findAllViews(page)
+            .stream()
+            .map(o -> new ObjectSummaryModel(o.getId(), o.getName()))
+            .collect(Collectors.toList());
+        */
         return null;
     }
 
     @Override
-    public Page<ObjectSummaryModel> findAll(Pageable page) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Page<LogEntry> findAllLogs(Long id, Pageable page) {
-        // TODO Auto-generated method stub
+    public List<LogEntry> findAllLogs(Long id, Pageable page) {
+        /*
+        return repository
+            .findLogsByObjectEntityId(id, page)
+            .stream()
+            .map(l -> new LogEntry(l.getMessage(), Severity.FromInteger(l.getSeverity())))
+            .collect(Collectors.toList());
+        */
         return null;
     }
 
     @Override
     public void updateObjectModel(ObjectModel model) {
-        // TODO Auto-generated method stub
+
+        if (!model.getId().isPresent()) {
+            throw new  IllegalArgumentException("model must have a valid id");
+        }
+
+        ObjectEntity existing = repository
+            .findById(model.getId().get())
+            .orElseThrow();
         
+        existing.Update(model);
+        repository.save(existing);
     }
 
     @Override
@@ -66,7 +92,10 @@ public class DatabaseObjectDataService implements ObjectDataService {
 
     @Override
     public void deleteObjectModel(ObjectModel model) {
-        // TODO Auto-generated method stub
+        if (!model.getId().isPresent()) {
+            throw new  IllegalArgumentException("model must have a valid id");
+        }
+        repository.deleteById(model.getId().get());
     }
     
 }

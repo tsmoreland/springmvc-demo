@@ -27,7 +27,7 @@ import tsmoreland.objecttracker.core.projections.ObjectSummaryModel;
 import tsmoreland.objecttracker.data.entities.ObjectEntity;
 import tsmoreland.objecttracker.data.repositories.ObjectRepository;
 
-//@Service
+@Service
 public class DatabaseObjectDataService implements ObjectDataService {
 
     @Autowired
@@ -48,20 +48,26 @@ public class DatabaseObjectDataService implements ObjectDataService {
 
     @Override
     public List<ObjectSummaryModel> findAll(Pageable page) {
+        /*
         return repository
             .findAllViews(page)
             .stream()
             .map(o -> new ObjectSummaryModel(o.getId(), o.getName()))
             .collect(Collectors.toList());
+            */
+        return null;            
     }
 
     @Override
     public List<LogEntry> findAllLogs(Long id, Pageable page) {
+        /*
         return repository
             .findLogsByObjectEntityId(id, page)
             .stream()
             .map(l -> new LogEntry(l.getMessage(), Severity.FromInteger(l.getSeverity())))
             .collect(Collectors.toList());
+        */
+        return null;            
     }
 
     @Override

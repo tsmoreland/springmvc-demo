@@ -16,9 +16,12 @@ package tsmoreland.objecttracker.app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories("tsmoreland.objecttracker.data")
 @ComponentScan(basePackages= "tsmoreland.objecttracker.data")
+@ComponentScan(basePackages= "tsmoreland.objecttracker.core")
 @ComponentScan(basePackages= "tsmoreland.objecttracker.app")
 public class AppApplication {
 

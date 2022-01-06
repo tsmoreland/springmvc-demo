@@ -23,10 +23,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan(basePackages= "tsmoreland.objecttracker.data")
 @ComponentScan(basePackages= "tsmoreland.objecttracker.core")
 @ComponentScan(basePackages= "tsmoreland.objecttracker.app")
-public class AppApplication {
+public class App {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppApplication.class, args);
+		SpringApplication.run(App.class, args);
 	}
 
 }

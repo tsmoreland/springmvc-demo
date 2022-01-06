@@ -16,7 +16,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 @Configuration
-@ComponentScan(basePackages={"tsmoreland.objecttracker.app"})
+@ComponentScan(basePackages={"tsmoreland.objecttracker"})
 public class DatabaseConfig {
 
     @Autowired Environment env;

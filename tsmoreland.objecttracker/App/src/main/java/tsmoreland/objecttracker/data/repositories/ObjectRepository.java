@@ -27,10 +27,8 @@ public interface ObjectRepository extends PagingAndSortingRepository<ObjectEntit
 
     Page<ObjectEntitySummaryView> findAllViews(Pageable pageable);
 
-    /*
     @Query(
         value = "select l from LogEntity l where l.ObjectEntityId = :id")
     Page<LogEntryEntity> findLogsByObjectEntityId(Long id, Pageable pageable);
-    */
 
 }

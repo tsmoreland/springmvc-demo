@@ -1,6 +1,4 @@
 package tsmoreland.objecttracker.data.projections;
 
-public interface ObjectEntitySummaryView {
-    Long getId();
-    String getName();
+public record ObjectEntitySummaryView(Long id, String name) {
 }

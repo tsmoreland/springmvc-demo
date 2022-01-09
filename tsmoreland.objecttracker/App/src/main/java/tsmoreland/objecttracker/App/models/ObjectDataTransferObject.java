@@ -12,35 +12,37 @@
 //
 package tsmoreland.objecttracker.app.models;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 public class ObjectDataTransferObject {
     
-    private int id;
+    private long id;
     private String name;
-    private AddressDataTransferObject address;
-    private Calendar lastModifiedTime;
-    private List<LogDataTransferObject> logs;
+    private int progress;
+    private Optional<List<LogDataTransferObject>> logs;
 
-
-    public ObjectDataTransferObject(int id, String name, AddressDataTransferObject address, Calendar lastModifiedTime, List<LogDataTransferObject> logs) {
+    public ObjectDataTransferObject(long id, String name, int progress, Optional<List<LogDataTransferObject>> logs) {
         this.id = id;
         this.name = name;
-        this.address = address;
-        this.lastModifiedTime = lastModifiedTime;
-        this.logs = new ArrayList<LogDataTransferObject>(logs);
+        this.progress = progress;
+        this.logs = logs;
     }
     public ObjectDataTransferObject() {
-        this.logs = new ArrayList<>();
+        this.logs = Optional.empty();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+    public int getProgress() {
+        return progress;
+    }
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
     public String getName() {
         return name;
@@ -48,22 +50,10 @@ public class ObjectDataTransferObject {
     public void setName(String name) {
         this.name = name;
     }
-    public AddressDataTransferObject getAddress() {
-        return address;
-    }
-    public void setAddress(AddressDataTransferObject address) {
-        this.address = address;
-    }
-    public Calendar getLastModifiedTime() {
-        return lastModifiedTime;
-    }
-    public void setLastModifiedTime(Calendar lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
-    }
-    public List<LogDataTransferObject> getLogs() {
+    public Optional<List<LogDataTransferObject>> getLogs() {
         return logs;
     }
-    public void setLogs(List<LogDataTransferObject> logs) {
+    public void setLogs(Optional<List<LogDataTransferObject>> logs) {
         this.logs = logs;
     }
 }

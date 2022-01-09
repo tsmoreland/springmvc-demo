@@ -57,11 +57,14 @@ public class DatabaseObjectDataService implements ObjectDataService {
 
     @Override
     public List<LogEntry> findAllLogs(Long id, Pageable page) {
+        /*
         return repository
             .findLogsByObjectEntityId(id, page)
             .stream()
             .map(l -> new LogEntry(l.getMessage(), Severity.FromInteger(l.getSeverity())))
             .collect(Collectors.toList());
+            */
+        return null;
     }
 
     @Override

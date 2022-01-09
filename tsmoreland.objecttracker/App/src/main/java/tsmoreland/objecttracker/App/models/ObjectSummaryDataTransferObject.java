@@ -12,16 +12,16 @@
 //
 package tsmoreland.objecttracker.app.models;
 
-public class ObjectSummaryModel {
+public class ObjectSummaryDataTransferObject {
 
     private int id;
     private String name;
 
-    public ObjectSummaryModel(int id, String name) {
+    public ObjectSummaryDataTransferObject(int id, String name) {
         this.id = id;
         this.name = name;
     }
-    public ObjectSummaryModel() {
+    public ObjectSummaryDataTransferObject() {
     }
 
     public int getId() {

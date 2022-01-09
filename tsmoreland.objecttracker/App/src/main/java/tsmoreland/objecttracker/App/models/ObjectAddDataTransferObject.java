@@ -15,18 +15,18 @@ package tsmoreland.objecttracker.app.models;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class ObjectAddModel {
+public class ObjectAddDataTransferObject {
     
     @NotNull
     @Size(min = 3, max = 200)
     private String name;
-    private Address address;
+    private AddressDataTransferObject address;
 
-    public ObjectAddModel(String name, Address address) {
+    public ObjectAddDataTransferObject(String name, AddressDataTransferObject address) {
         this.name = name;
         this.address = address;
     }
-    public ObjectAddModel() {
+    public ObjectAddDataTransferObject() {
     }
 
     public String getName() {
@@ -35,10 +35,10 @@ public class ObjectAddModel {
     public void setName(String name) {
         this.name = name;
     }
-    public Address getAddress() {
+    public AddressDataTransferObject getAddress() {
         return address;
     }
-    public void setAddress(Address address) {
+    public void setAddress(AddressDataTransferObject address) {
         this.address = address;
     }
 }

@@ -16,23 +16,23 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ObjectModel {
+public class ObjectDataTransferObject {
     
     private int id;
     private String name;
-    private Address address;
+    private AddressDataTransferObject address;
     private Calendar lastModifiedTime;
-    private List<LogModel> logs;
+    private List<LogDataTransferObject> logs;
 
 
-    public ObjectModel(int id, String name, Address address, Calendar lastModifiedTime, List<LogModel> logs) {
+    public ObjectDataTransferObject(int id, String name, AddressDataTransferObject address, Calendar lastModifiedTime, List<LogDataTransferObject> logs) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.lastModifiedTime = lastModifiedTime;
-        this.logs = new ArrayList<LogModel>(logs);
+        this.logs = new ArrayList<LogDataTransferObject>(logs);
     }
-    public ObjectModel() {
+    public ObjectDataTransferObject() {
         this.logs = new ArrayList<>();
     }
 
@@ -48,10 +48,10 @@ public class ObjectModel {
     public void setName(String name) {
         this.name = name;
     }
-    public Address getAddress() {
+    public AddressDataTransferObject getAddress() {
         return address;
     }
-    public void setAddress(Address address) {
+    public void setAddress(AddressDataTransferObject address) {
         this.address = address;
     }
     public Calendar getLastModifiedTime() {
@@ -60,10 +60,10 @@ public class ObjectModel {
     public void setLastModifiedTime(Calendar lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
-    public List<LogModel> getLogs() {
+    public List<LogDataTransferObject> getLogs() {
         return logs;
     }
-    public void setLogs(List<LogModel> logs) {
+    public void setLogs(List<LogDataTransferObject> logs) {
         this.logs = logs;
     }
 }

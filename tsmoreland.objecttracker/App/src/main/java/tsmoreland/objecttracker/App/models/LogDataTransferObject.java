@@ -12,16 +12,16 @@
 //
 package tsmoreland.objecttracker.app.models;
 
-public class LogModel {
+public class LogDataTransferObject {
     private int severity;
     private String message;
 
-    public LogModel(int severity, String message) {
+    public LogDataTransferObject(int severity, String message) {
         this.severity = severity;
         this.message = message;
     }
 
-    public LogModel() {
+    public LogDataTransferObject() {
         this.message = "";
     }
 

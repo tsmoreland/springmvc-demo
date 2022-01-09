@@ -16,7 +16,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class Address {
+public class AddressDataTransferObject {
     
     @Min(1)
     private int houseNumber;
@@ -29,13 +29,13 @@ public class Address {
     @Size(min = 6, max = 20)
     public String postCode;
 
-    public Address(int houseNumber, String street, String postCode) {
+    public AddressDataTransferObject(int houseNumber, String street, String postCode) {
         this.houseNumber = houseNumber;
         this.street = street;
         this.postCode = postCode;
     }
 
-    public Address() {
+    public AddressDataTransferObject() {
     }
 
     public int getHouseNumber() {
@@ -57,5 +57,5 @@ public class Address {
         this.postCode = postCode;
     }
 
-    public static final Address NONE = new Address();
+    public static final AddressDataTransferObject NONE = new AddressDataTransferObject();
 }

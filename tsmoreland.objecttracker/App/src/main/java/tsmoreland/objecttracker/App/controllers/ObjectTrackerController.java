@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -34,9 +35,13 @@ import tsmoreland.objecttracker.app.models.LogModel;
 import tsmoreland.objecttracker.app.models.ObjectAddModel;
 import tsmoreland.objecttracker.app.models.ObjectModel;
 import tsmoreland.objecttracker.app.models.ObjectSummaryModel;
+import tsmoreland.objecttracker.data.services.ObjectDataService;
 
 @RestController
 public class ObjectTrackerController {
+
+    @Autowired
+    private ObjectDataService objectDataService;
 
     @PostMapping(
         value = "objects", 

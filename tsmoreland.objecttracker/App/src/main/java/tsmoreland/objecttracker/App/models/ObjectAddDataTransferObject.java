@@ -20,11 +20,13 @@ public class ObjectAddDataTransferObject {
     @NotNull
     @Size(min = 3, max = 200)
     private String name;
-    private AddressDataTransferObject address;
 
-    public ObjectAddDataTransferObject(String name, AddressDataTransferObject address) {
+    @NotNull
+    private int progress;
+
+    public ObjectAddDataTransferObject(String name, int progress) {
         this.name = name;
-        this.address = address;
+        this.progress = progress;
     }
     public ObjectAddDataTransferObject() {
     }
@@ -35,10 +37,10 @@ public class ObjectAddDataTransferObject {
     public void setName(String name) {
         this.name = name;
     }
-    public AddressDataTransferObject getAddress() {
-        return address;
+    public int getProgress() {
+        return progress;
     }
-    public void setAddress(AddressDataTransferObject address) {
-        this.address = address;
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }

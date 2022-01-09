@@ -48,26 +48,20 @@ public class DatabaseObjectDataService implements ObjectDataService {
 
     @Override
     public List<ObjectSummaryModel> findAll(Pageable page) {
-        /*
         return repository
             .findAllViews(page)
             .stream()
-            .map(o -> new ObjectSummaryModel(o.getId(), o.getName()))
+            .map(o -> new ObjectSummaryModel(o.id(), o.name()))
             .collect(Collectors.toList());
-            */
-        return null;            
     }
 
     @Override
     public List<LogEntry> findAllLogs(Long id, Pageable page) {
-        /*
         return repository
             .findLogsByObjectEntityId(id, page)
             .stream()
             .map(l -> new LogEntry(l.getMessage(), Severity.FromInteger(l.getSeverity())))
             .collect(Collectors.toList());
-        */
-        return null;            
     }
 
     @Override

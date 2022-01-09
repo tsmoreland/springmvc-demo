@@ -14,9 +14,9 @@ package tsmoreland.objecttracker.data.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import tsmoreland.objecttracker.data.entities.LogEntryEntity;
@@ -26,9 +26,16 @@ import tsmoreland.objecttracker.data.projections.ObjectEntitySummaryView;
 @Repository
 public interface ObjectRepository extends PagingAndSortingRepository<ObjectEntity, Long> {
 
-    /*
+
+    @Query(value = """
+        select new tsmoreland.objecttracker.data.projections.ObjectEntitySummaryView(e.id, e.name)
+        from ObjectEntity e
+    """)
     Page<ObjectEntitySummaryView> findAllViews(Pageable pageable);
 
-    Page<LogEntryEntity> findLogsByObjectEntityId(Long id, Pageable pageable);
-    */
+    @Query(value = """
+        select l from LogEntryEntity l
+        where l.ObjectEntityId = :id
+    """)
+    Page<LogEntryEntity> findLogsByObjectEntityId(@Param("id") Long id, Pageable pageable);
 }

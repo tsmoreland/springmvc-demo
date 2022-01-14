@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import tsmoreland.objecttracker.app.models.LogDataTransferObject;
 import tsmoreland.objecttracker.app.models.ObjectAddDataTransferObject;
 import tsmoreland.objecttracker.app.models.ObjectDataTransferObject;
+import tsmoreland.objecttracker.app.models.ObjectSummaryDataTransferObject;
 import tsmoreland.objecttracker.core.models.LogEntry;
 import tsmoreland.objecttracker.core.models.ObjectModel;
 
@@ -38,9 +39,16 @@ public class DataTransferObjectMapper {
             optionalLogs);
     }
 
+    public ObjectSummaryDataTransferObject objectModelToSummaryDataTransferObject(ObjectModel model) {
+        return new ObjectSummaryDataTransferObject(
+            model.getId().orElseThrow(() -> new IllegalArgumentException("invalid model")),
+            model.getName());
+    }
+
     public LogDataTransferObject logEntryToDataTransferObject(LogEntry model) {
         return new LogDataTransferObject(
             model.severity().asInt(),
             model.message());
     }
+
 }

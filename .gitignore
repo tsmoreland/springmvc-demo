@@ -383,3 +383,5 @@ mongodemo/setJavaHome.ps1
 
 objecttracker.db
 **/.dccache
+
+**/.mvn

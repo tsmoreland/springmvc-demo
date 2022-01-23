@@ -13,8 +13,6 @@
 
 package tsmoreland.objecttracker.app.controllers;
 
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +28,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tsmoreland.objecttracker.app.models.Address;
-import tsmoreland.objecttracker.app.models.LogModel;
-import tsmoreland.objecttracker.app.models.ObjectAddModel;
-import tsmoreland.objecttracker.app.models.ObjectModel;
-import tsmoreland.objecttracker.app.models.ObjectSummaryModel;
+import tsmoreland.objecttracker.app.models.LogDataTransferObject;
+import tsmoreland.objecttracker.app.models.ObjectAddDataTransferObject;
+import tsmoreland.objecttracker.app.models.ObjectSummaryDataTransferObject;
+import tsmoreland.objecttracker.app.services.DataTransferObjectMapper;
 import tsmoreland.objecttracker.data.services.ObjectDataService;
 
 @RestController
@@ -43,19 +40,22 @@ public class ObjectTrackerController {
     @Autowired
     private ObjectDataService objectDataService;
 
+    @Autowired
+    private DataTransferObjectMapper mapper;
+
     @PostMapping(
-        value = "objects", 
+        value = "objects",
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    public ResponseEntity<?> putObject(@Validated @ModelAttribute @RequestBody ObjectAddModel model, BindingResult bindingResult) {
+    public ResponseEntity<?> putObject(@Validated @ModelAttribute @RequestBody ObjectAddDataTransferObject dataTransferObject, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException(); // add new exception so we can include these in error response
         }
+        var model = mapper.objectModelFromAddedDataTransferObject(dataTransferObject);
+        model = objectDataService.addObjectModel(model);
 
-        var addedModel = new ObjectModel(1, "Fred", new Address(1, "Some St.", "Anyville"), Calendar.getInstance(), Collections.<LogModel>emptyList());
-
-        return new ResponseEntity<>(addedModel, HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.objetModelToDataTransferObject(model), HttpStatus.CREATED);
     }
 
     @GetMapping(
@@ -63,11 +63,11 @@ public class ObjectTrackerController {
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    public ResponseEntity<List<ObjectSummaryModel>> getObjects() {
+    public ResponseEntity<List<ObjectSummaryDataTransferObject>> getObjects() {
 
-        return ResponseEntity.ok(List.<ObjectSummaryModel>of(
-            new ObjectSummaryModel(1, "Fred"),
-            new ObjectSummaryModel(2, "John")
+        return ResponseEntity.ok(List.<ObjectSummaryDataTransferObject>of(
+            new ObjectSummaryDataTransferObject(1, "Fred"),
+            new ObjectSummaryDataTransferObject(2, "John")
         ));
     }
 
@@ -76,10 +76,10 @@ public class ObjectTrackerController {
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    public ResponseEntity<ObjectSummaryModel> getObjectById(@PathVariable int id) {
+    public ResponseEntity<ObjectSummaryDataTransferObject> getObjectById(@PathVariable int id) {
         return switch (id) {
-            case 1 -> ResponseEntity.ok(new ObjectSummaryModel(1, "Fred"));
-            case 2 -> ResponseEntity.ok(new ObjectSummaryModel(2, "John"));
+            case 1 -> ResponseEntity.ok(new ObjectSummaryDataTransferObject(1, "Fred"));
+            case 2 -> ResponseEntity.ok(new ObjectSummaryDataTransferObject(2, "John"));
             default -> ResponseEntity.notFound().build();
         };
 
@@ -90,7 +90,7 @@ public class ObjectTrackerController {
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    public ResponseEntity<?> putLog(@PathVariable int id, @Validated @ModelAttribute @RequestBody LogModel model, BindingResult bindingResult) {
+    public ResponseEntity<?> putLog(@PathVariable int id, @Validated @ModelAttribute @RequestBody LogDataTransferObject model, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new IllegalArgumentException(); // add new exception so we can include these in error response
         }
@@ -107,15 +107,15 @@ public class ObjectTrackerController {
         produces = { "application/json", "application/xml" },
         consumes = { "application/json", "application/xml" }
     )
-    public ResponseEntity<List<LogModel>> getLogs(@PathVariable int id) {
+    public ResponseEntity<List<LogDataTransferObject>> getLogs(@PathVariable int id) {
 
         return switch(id) {
-            case 1 -> ResponseEntity.ok(List.<LogModel>of(
-                new LogModel(0, "first message for Fred"),
-                new LogModel(1, "second message for Fred")));
-            case 2 -> ResponseEntity.ok(List.<LogModel>of(
-                new LogModel(0, "first message for John"),
-                new LogModel(1, "second message for John")));
+            case 1 -> ResponseEntity.ok(List.<LogDataTransferObject>of(
+                new LogDataTransferObject(0, "first message for Fred"),
+                new LogDataTransferObject(1, "second message for Fred")));
+            case 2 -> ResponseEntity.ok(List.<LogDataTransferObject>of(
+                new LogDataTransferObject(0, "first message for John"),
+                new LogDataTransferObject(1, "second message for John")));
             default -> ResponseEntity.notFound().build();
         };
     }

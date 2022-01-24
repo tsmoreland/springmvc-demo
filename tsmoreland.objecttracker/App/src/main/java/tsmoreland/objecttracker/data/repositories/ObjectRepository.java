@@ -44,12 +44,12 @@ could not resolve property: ObjectEntityId of: tsmoreland.objecttracker.data.ent
     where l.ObjectEntityId = :id
 ]
 Caused by: org.hibernate.QueryException: could not resolve property: ObjectEntityId of: tsmoreland.objecttracker.data.entities.LogEntryEntity
+    */
 
 
     @Query(value = """
         select l from LogEntryEntity l
-        where l.ObjectEntityId = :id
+        where l.objectEntity.id = :id
     """)
     Page<LogEntryEntity> findLogsByObjectEntityId(@Param("id") Long id, Pageable pageable);
-    */
 }

@@ -33,20 +33,6 @@ public interface ObjectRepository extends PagingAndSortingRepository<ObjectEntit
     """)
     Page<ObjectEntitySummaryView> findAllViews(Pageable pageable);
 
-    /*
-
-Caused by: java.lang.IllegalArgumentException:
-org.hibernate.QueryException: could not resolve property: ObjectEntityId of: tsmoreland.objecttracker.data.entities.LogEntryEntity [    select l from tsmoreland.objecttracker.data.entities.LogEntryEntity l
-    where l.ObjectEntityId = :id
-]
-Caused by: org.hibernate.QueryException:
-could not resolve property: ObjectEntityId of: tsmoreland.objecttracker.data.entities.LogEntryEntity [    select l from tsmoreland.objecttracker.data.entities.LogEntryEntity l
-    where l.ObjectEntityId = :id
-]
-Caused by: org.hibernate.QueryException: could not resolve property: ObjectEntityId of: tsmoreland.objecttracker.data.entities.LogEntryEntity
-    */
-
-
     @Query(value = """
         select l from LogEntryEntity l
         where l.objectEntity.id = :id

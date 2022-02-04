@@ -83,7 +83,7 @@ public class JpaProvinceService implements ProvinceService {
                 return city;
             }
 
-            var province = provinceRepository.getOne(provinceId);
+            var province = provinceRepository.getById(provinceId);
             var newCity = City.create(name, province);
             return Optional.of(cityRepository.save(newCity));
 

@@ -90,7 +90,7 @@ public class JpaCountryService implements CountryService {
             if (province.isPresent()) {
                 return province;
             }
-            var country = countryRepository.getOne(countryId);
+            var country = countryRepository.getById(countryId);
             var newProvince = Province.create(name, country);
 
             return Optional.of(provinceRepository.save(newProvince));

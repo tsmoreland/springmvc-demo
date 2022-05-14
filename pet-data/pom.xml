@@ -14,7 +14,7 @@
 	<name>pet-data</name>
 	<description>data access library</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -37,6 +37,11 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.3.20</version>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.3.20</version>
+        </dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>

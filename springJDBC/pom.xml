@@ -14,7 +14,7 @@
 	<name>mysqldemo</name>
 	<description>mysql sample using Spring MVC</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 
@@ -35,6 +35,12 @@
             <artifactId>spring-beans</artifactId>
             <version>5.3.20</version>
         </dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>5.7.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

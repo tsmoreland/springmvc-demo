@@ -19,14 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import moreland.spring.sample.mysqldemo.repositories.JdbcTemplatePetRepository;
-import moreland.spring.sample.mysqldemo.repositories.PetRepository;
-import moreland.spring.sample.mysqldemo.services.PetService;
-import moreland.spring.sample.mysqldemo.services.PetServiceImpl;
 
 @Configuration
 @ComponentScan(basePackages={"moreland.spring.sample.mysqldemo"})
@@ -36,34 +29,22 @@ public class MysqldemoConfiguration {
     private Environment environment;
 
     @Bean
-    public DataSourceTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(dataSource());
-
-    }
-
-    @Bean
     public DataSource dataSource() {
+        // storing in temp variables for easier inspection
+        String url = environment.getRequiredProperty("spring.datasource.url");
+        String driverClassName = environment.getRequiredProperty("spring.datasource.driver-class-name");
+        String username = environment.getRequiredProperty("spring.datasource.username");
+        String password = environment.getRequiredProperty("spring.datasource.password");
+        password = System.getenv(password);
+        
+
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getRequiredProperty("mysqldemo.driverClassName"));
-        dataSource.setUrl(environment.getRequiredProperty("mysqldemo.url"));
-        dataSource.setUsername(environment.getRequiredProperty("mysqldemo.username"));
-        dataSource.setPassword(System.getenv(environment.getRequiredProperty("mysqldemo.password")));
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+
         return dataSource;
-    }
-
-    @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
-    }
-
-    @Bean
-    public PetRepository petRepository() {
-        return new JdbcTemplatePetRepository();
-    }
-
-    @Bean
-    public PetService petService() {
-        return new PetServiceImpl(petRepository());
     }
 
 }

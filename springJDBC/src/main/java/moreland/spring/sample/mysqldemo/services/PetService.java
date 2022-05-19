@@ -14,8 +14,11 @@ package moreland.spring.sample.mysqldemo.services;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import moreland.spring.sample.mysqldemo.entities.Pet;
 
+@Service
 public interface PetService {
     Pet create(Pet pet);
     Pet findById(Long id);

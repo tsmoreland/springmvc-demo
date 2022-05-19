@@ -15,11 +15,13 @@ package moreland.spring.sample.mysqldemo.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import moreland.spring.sample.mysqldemo.entities.Pet;
 import moreland.spring.sample.mysqldemo.repositories.PetRepository;
 
+@Component
 public class PetServiceImpl implements PetService {
 
     private PetRepository petRepository;

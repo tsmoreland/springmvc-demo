@@ -13,14 +13,10 @@
 
 package moreland.spring.sample.mongodemo.converters;
 
-import com.mongodb.lang.NonNullApi;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.Nullable;
 
 import moreland.spring.sample.mongodemo.domain.LatitudeLongitude;
 import moreland.spring.sample.mongodemo.internal.Guard;
-
-import javax.validation.constraints.Null;
 
 public class LatitudeLongitudeToString implements Converter<LatitudeLongitude, String> {
 

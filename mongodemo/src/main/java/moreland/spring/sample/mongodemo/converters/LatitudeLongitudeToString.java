@@ -10,18 +10,24 @@
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 package moreland.spring.sample.mongodemo.converters;
 
+import com.mongodb.lang.NonNullApi;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.Nullable;
 
 import moreland.spring.sample.mongodemo.domain.LatitudeLongitude;
 import moreland.spring.sample.mongodemo.internal.Guard;
+
+import javax.validation.constraints.Null;
 
 public class LatitudeLongitudeToString implements Converter<LatitudeLongitude, String> {
 
     @Override
     public String convert(LatitudeLongitude source) {
         Guard.Against.argumentNull(source, "source");
+
         return "%f, %f".formatted(source.getLatitude(), source.getLongitude());
     }
     

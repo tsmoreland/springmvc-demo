@@ -2,10 +2,7 @@ package ca.tsmoreland.datafundementals.infrastructure.repository;
 
 import ca.tsmoreland.datafundementals.model.Book;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +17,25 @@ public class BookDao extends AbstractDao implements Dao<Book> {
 
     @Override
     public Optional<Book> findById(long id) {
-        return Optional.empty();
+        final String sql = "SELECT id, title FROM BOOKS WHERE ID = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setLong(1, id);
+
+            try (ResultSet results  = preparedStatement.executeQuery()) {
+                var book = new Book();
+                if (results.next()) {
+                    book.setId(results.getLong("id"));
+                    book.setTitle(results.getString("title"));
+                }
+                return Optional.of(book);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
     @Override

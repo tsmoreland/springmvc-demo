@@ -12,5 +12,5 @@ services:
     volumes:
       - "./.data/db:/var/lib/mysql"
     environment:
-      MYSQL_ROOT_PASSWORD: Pa55w0rd!
+      MYSQL_ROOT_PASSWORD: P@55W0rd!
       MYSQL_DATABASE: library_db

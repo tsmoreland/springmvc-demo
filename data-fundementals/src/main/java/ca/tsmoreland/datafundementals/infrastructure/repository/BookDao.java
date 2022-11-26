@@ -67,13 +67,44 @@ public class BookDao extends AbstractDao implements Dao<Book> {
     }
 
     @Override
-    public void update(Book book, String[] params) {
+    public Book update(Book book) {
+        final String sql = "UPDATE BOOKS SET title = ? WHERE id = ?";
 
+        return execute(sql,
+            statement -> {
+                statement.setString(1, book.getTitle());
+                statement.setLong(2, book.getId());
+                statement.executeUpdate();
+                // not entirely happy with the returns here, well here ok but on error or exception we shouldn't be returning the same thing, any Optional<Book> would
+                // at least tell us if the update worked (where empty means it failed.
+
+                return book;
+            },
+            book);
     }
 
     @Override
-    public void delete(Book book) {
+    public int[] update(List<Book> entities) {
+        final String sql = "UPDATE BOOKS SET title = ?, rating = ? WHERE ID = ?";
+        return execute(sql, statement -> {
+            for (Book book : entities) {
+                statement.setString(1, book.getTitle());
+                statement.setInt(2, book.getRating());
+                statement.setLong(3, book.getId());
+                statement.addBatch();
+            }
 
+            return statement.executeBatch();
+        }, new int[0]);
+    }
+
+    @Override
+    public int delete(Book book) {
+        final String sql = "DELETE FROM BOOKS WHERE id = ?";
+        return execute(sql, statement -> {
+            statement.setLong(1, book.getId());
+            return statement.executeUpdate();
+        }, 0);
     }
 
     private Book readFromResults(ResultSet results) throws SQLException {

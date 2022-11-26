@@ -4,6 +4,14 @@ public class Book {
 
     private long id;
     private String title;
+    private int rating;
+
+    public Book(String title)  {
+        this.title = title;
+    }
+
+    public Book() {
+    }
 
     public long getId() {
         return id;
@@ -27,5 +35,13 @@ public class Book {
     @Override
     public String toString() {
         return "id: %d, title: %s".formatted(id, title);
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

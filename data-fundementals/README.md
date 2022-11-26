@@ -15,3 +15,7 @@ CREATE TABLE IF NOT EXISTS BOOKS(
     PRIMARY KEY(id)
 );
 ```
+
+
+at some point later we update the table to include a rating column, can either do that at the start or later (if doing it at the start then we'll want a default value - which we'd need if we're adding later (that or allow null))
+column would look something like ```rating INT`` - in this case I'm allowing null

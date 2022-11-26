@@ -7,6 +7,7 @@ public interface Dao<TEntity> {
     TEntity create(TEntity entity);
     Optional<TEntity> findById(long id);
     List<TEntity> findAll();
-    void update(TEntity entity, String[] params);
-    void delete(TEntity entity);
+    TEntity update(TEntity entity);
+    int[] update(List<TEntity> entities);
+    int delete(TEntity entity);
 }

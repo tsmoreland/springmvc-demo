@@ -24,18 +24,14 @@ public class BookDao extends AbstractDao implements Dao<Book> {
             preparedStatement.setLong(1, id);
 
             try (ResultSet results  = preparedStatement.executeQuery()) {
-                var book = new Book();
                 if (results.next()) {
-                    book.setId(results.getLong("id"));
-                    book.setTitle(results.getString("title"));
+                    return Optional.of(readFromResults(results));
                 }
-                return Optional.of(book);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     @Override
@@ -48,17 +44,13 @@ public class BookDao extends AbstractDao implements Dao<Book> {
 
             final List<Book> books = new ArrayList<>();;
             while (results.next()) {
-                Book book = new Book();
-                book.setId(results.getLong("id"));
-                book.setTitle(results.getString("title"));
-                books.add(book);
+                books.add(readFromResults(results));
             }
             return books;
         } catch (SQLException e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
-
     }
 
     @Override
@@ -69,5 +61,12 @@ public class BookDao extends AbstractDao implements Dao<Book> {
     @Override
     public void delete(Book book) {
 
+    }
+
+    private Book readFromResults(ResultSet results) throws SQLException {
+        var book = new Book();
+        book.setId(results.getLong("id"));
+        book.setTitle(results.getString("title"));
+        return book;
     }
 }

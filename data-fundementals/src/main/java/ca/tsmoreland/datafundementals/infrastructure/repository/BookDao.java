@@ -18,20 +18,16 @@ public class BookDao extends AbstractDao implements Dao<Book> {
     @Override
     public Optional<Book> findById(long id) {
         final String sql = "SELECT id, title FROM BOOKS WHERE ID = ?";
+        return execute(sql, statement -> {
+            statement.setLong(1, id);
 
-        try (Connection conn = getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setLong(1, id);
-
-            try (ResultSet results  = preparedStatement.executeQuery()) {
+            try (ResultSet results  = statement.executeQuery()) {
                 if (results.next()) {
                     return Optional.of(readFromResults(results));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+            return Optional.empty();
+        }, Optional.empty());
     }
 
     @Override
@@ -68,5 +64,23 @@ public class BookDao extends AbstractDao implements Dao<Book> {
         book.setId(results.getLong("id"));
         book.setTitle(results.getString("title"));
         return book;
+    }
+
+    private <TResult> TResult execute(String sql, PreparedStatementConsumer<TResult> consumer, TResult defaultValue) {
+        try (Connection conn = getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+
+            return consumer.consume(preparedStatement);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return defaultValue;
+    }
+
+    @FunctionalInterface
+    interface PreparedStatementConsumer<TResult> {
+        TResult consume(PreparedStatement statement) throws SQLException;
     }
 }

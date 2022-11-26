@@ -1,6 +1,7 @@
 package ca.tsmoreland.datafundementals.infrastructure.repository;
 
 import ca.tsmoreland.datafundementals.model.Book;
+import com.mysql.cj.protocol.Resultset;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,8 +12,24 @@ import java.util.Optional;
 public class BookDao extends AbstractDao implements Dao<Book> {
 
     @Override
-    public void add(Book book) {
+    public Book create(Book book) {
+        final String sql = "INSERT INTO BOOKS (title) VALUE (?)";
 
+        return execute(sql,
+            statement -> {
+                statement.setString(1, book.getTitle());
+                statement.executeUpdate();
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        book.setId(generatedKeys.getLong(1));
+                    }
+
+                }
+                return book;
+            },
+            (c, s) -> c.prepareStatement(s, Statement.RETURN_GENERATED_KEYS),
+            book);
     }
 
     @Override
@@ -66,7 +83,10 @@ public class BookDao extends AbstractDao implements Dao<Book> {
         return book;
     }
 
-    private <TResult> TResult execute(String sql, PreparedStatementConsumer<TResult> consumer, TResult defaultValue) {
+    private <TResult> TResult execute(final String sql, PreparedStatementConsumer<TResult> consumer, final TResult defaultValue) {
+       return execute(sql, consumer, Connection::prepareStatement, defaultValue);
+    }
+    private <TResult> TResult execute(final String sql, PreparedStatementConsumer<TResult> consumer, PreparedStatementProducer producer, final TResult defaultValue) {
         try (Connection conn = getConnection();
              PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
 
@@ -83,4 +103,10 @@ public class BookDao extends AbstractDao implements Dao<Book> {
     interface PreparedStatementConsumer<TResult> {
         TResult consume(PreparedStatement statement) throws SQLException;
     }
+
+    @FunctionalInterface
+    interface PreparedStatementProducer {
+        PreparedStatement produce(Connection connection, final String sql) throws SQLException;
+    }
+
 }

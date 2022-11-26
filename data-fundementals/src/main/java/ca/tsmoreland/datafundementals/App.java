@@ -19,5 +19,12 @@ public class App {
 
         Optional<Book> maybeBook = bookDao.findById(1);
         maybeBook.ifPresent(System.out::println);
+
+        var templateForCreated = new Book();
+        templateForCreated.setTitle("Batman City of Bane Part 1");
+
+        var created = bookDao.create(templateForCreated);
+        System.out.println(created);
+
     }
 }

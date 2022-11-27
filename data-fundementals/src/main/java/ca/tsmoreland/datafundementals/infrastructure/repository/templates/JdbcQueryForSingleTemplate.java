@@ -18,7 +18,7 @@ public abstract class JdbcQueryForSingleTemplate<TEntity> {
     public Optional<TEntity> queryForSingle(final String sql) {
         try (Connection connection = connectionProvider.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet results = statement.executeQuery(sql);) {
+             ResultSet results = statement.executeQuery(sql)) {
 
             if (results.next()) {
                 return Optional.of(mapItem(results));

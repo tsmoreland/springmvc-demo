@@ -2,6 +2,7 @@ package ca.tsmoreland.datafundementals;
 
 import ca.tsmoreland.datafundementals.infrastructure.repository.BookDao;
 import ca.tsmoreland.datafundementals.infrastructure.repository.Dao;
+import ca.tsmoreland.datafundementals.infrastructure.repository.MySqlConnectionProvider;
 import ca.tsmoreland.datafundementals.model.Book;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public class App {
     public static void main( String[] args ) {
 
-        Dao<Book> bookDao = new BookDao();
+        Dao<Book> bookDao = new BookDao(new MySqlConnectionProvider());
         List<Book> seedData = List.of(
             new Book("Batman: I am Gotham"),
             new Book("Batman: I am Suicide"),

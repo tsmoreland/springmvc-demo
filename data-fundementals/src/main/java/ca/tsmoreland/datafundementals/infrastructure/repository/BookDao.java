@@ -1,15 +1,23 @@
 package ca.tsmoreland.datafundementals.infrastructure.repository;
 
 import ca.tsmoreland.datafundementals.model.Book;
-import com.mysql.cj.protocol.Resultset;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
-public class BookDao extends AbstractDao implements Dao<Book> {
+public class BookDao extends MySqlConnectionProvider implements Dao<Book> {
+
+    private final ConnectionProvider connectionProvider;
+
+    public BookDao(ConnectionProvider connectionProvider) {
+        if (Objects.isNull(connectionProvider)) {
+            throw new IllegalArgumentException("connectionProvider cannot be null");
+        }
+
+        this.connectionProvider = connectionProvider;
+    }
 
     @Override
     public Book create(Book book) {
@@ -51,19 +59,14 @@ public class BookDao extends AbstractDao implements Dao<Book> {
     public List<Book> findAll() {
         final String sql = "SELECT * FROM BOOKS";
 
-        try (Connection conn = getConnection();
-             Statement statement = conn.createStatement();
-             ResultSet results  = statement.executeQuery(sql)) {
-
-            final List<Book> books = new ArrayList<>();;
-            while (results.next()) {
-                books.add(readFromResults(results));
+        JdbcQueryTemplate<Book> template = new JdbcQueryTemplate<Book>(connectionProvider) {
+            @Override
+            public Book mapItem(ResultSet results) throws SQLException {
+                return readFromResults(results);
             }
-            return books;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Collections.emptyList();
-        }
+        };
+
+        return template.queryForList(sql);
     }
 
     @Override

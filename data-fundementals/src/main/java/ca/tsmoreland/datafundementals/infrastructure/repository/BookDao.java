@@ -1,5 +1,7 @@
 package ca.tsmoreland.datafundementals.infrastructure.repository;
 
+import ca.tsmoreland.datafundementals.infrastructure.repository.templates.JdbcQueryForListTemplate;
+import ca.tsmoreland.datafundementals.infrastructure.repository.templates.JdbcQueryForSingleTemplate;
 import ca.tsmoreland.datafundementals.model.Book;
 
 import java.sql.*;
@@ -43,23 +45,20 @@ public class BookDao extends MySqlConnectionProvider implements Dao<Book> {
     @Override
     public Optional<Book> findById(long id) {
         final String sql = "SELECT id, title FROM BOOKS WHERE ID = ?";
-        return execute(sql, statement -> {
-            statement.setLong(1, id);
-
-            try (ResultSet results  = statement.executeQuery()) {
-                if (results.next()) {
-                    return Optional.of(readFromResults(results));
-                }
+        JdbcQueryForSingleTemplate<Book> template = new JdbcQueryForSingleTemplate<>(connectionProvider) {
+            @Override
+            public Book mapItem(ResultSet results) throws SQLException {
+                return readFromResults(results);
             }
-            return Optional.empty();
-        }, Optional.empty());
+        };
+        return template.queryForSingle(sql);
     }
 
     @Override
     public List<Book> findAll() {
         final String sql = "SELECT * FROM BOOKS";
 
-        JdbcQueryTemplate<Book> template = new JdbcQueryTemplate<Book>(connectionProvider) {
+        JdbcQueryForListTemplate<Book> template = new JdbcQueryForListTemplate<>(connectionProvider) {
             @Override
             public Book mapItem(ResultSet results) throws SQLException {
                 return readFromResults(results);

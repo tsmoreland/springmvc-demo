@@ -1,4 +1,6 @@
-package ca.tsmoreland.datafundementals.infrastructure.repository;
+package ca.tsmoreland.datafundementals.infrastructure.repository.templates;
+
+import ca.tsmoreland.datafundementals.infrastructure.repository.ConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class JdbcQueryTemplate<TEntity> {
+public abstract class JdbcQueryForListTemplate<TEntity> {
     private final ConnectionProvider connectionProvider;
 
-    public JdbcQueryTemplate(final ConnectionProvider connectionProvider) {
+    public JdbcQueryForListTemplate(final ConnectionProvider connectionProvider) {
         this.connectionProvider = connectionProvider;
     }
 

@@ -12,21 +12,25 @@
 //
 package moreland.spring.sample.mysqldemo.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // deepcode ignore DisablesCSRFProtection: <please specify a reason of ignoring this>
+public class SecurityConfiguration {
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        
-        http.authorizeRequests()
-            .antMatchers("/")
-            .permitAll();
+
+        http.authorizeHttpRequests()
+            .requestMatchers("/")
+                .permitAll();
+        return http.build();
+
     }
+
 }

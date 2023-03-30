@@ -1,7 +1,5 @@
 package com.moreland.sample.commandlineecho.cli;
 
-import com.moreland.sample.commandlineecho.service.Obfuscator;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,11 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages="com.moreland.sample.commandlineecho")
 public class Application implements CommandLineRunner  {
 
-	private Printer printer;
-	private Obfuscator obfuscator;
+	private final Printer printer;
+	private final com.moreland.sample.commandlineecho.service.Obfuscator obfuscator;
 
 	@Autowired
-	public Application(Printer printer, Obfuscator obfuscator) {
+	public Application(Printer printer, com.moreland.sample.commandlineecho.service.Obfuscator obfuscator) {
 		this.printer = printer;
 		this.obfuscator = obfuscator;
 	}

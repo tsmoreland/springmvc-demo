@@ -12,6 +12,8 @@
 //
 package com.moreland.sample.commandlineecho.cli;
 
+//import com.moreland.sample.commandlineecho.service.Obfuscator;
+//import com.moreland.sample.commandlineecho.service.ReversingObfuscator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,4 +24,11 @@ public class ApplicationConfiguration {
     public Printer printer() {
         return new ConsolePrinter();
     }
+
+    /*
+    @Bean
+    public Obfuscator obfuscator() {
+        return new ReversingObfuscator();
+    }
+    */
 }

@@ -19,12 +19,6 @@
             <artifactId>commandlineecho-service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>6.0.8</version>
-        </dependency>
     </dependencies>
 
     <build>

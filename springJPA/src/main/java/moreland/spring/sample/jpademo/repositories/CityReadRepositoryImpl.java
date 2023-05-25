@@ -15,8 +15,8 @@ package moreland.spring.sample.jpademo.repositories;
 
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import moreland.spring.sample.jpademo.entities.City;
 
